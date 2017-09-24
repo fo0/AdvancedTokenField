@@ -86,6 +86,7 @@ public class AdvancedTokenField extends CssLayout {
 		if (allow) {
 			inputField.setNewItemHandler(e -> {
 				addToken(tokenAddListener.action(tokenNewItemListener.action(e)));
+				inputField.clear();
 			});
 		} else {
 			inputField.setNewItemHandler(null);
@@ -127,7 +128,7 @@ public class AdvancedTokenField extends CssLayout {
 		field.addComponents(lbl, btn);
 		addComponent(field, getComponentCount() - 1);
 		addTokenToInputField(token);
-		inputField.setValue(null);
+		inputField.clear();
 	}
 
 	public void addTokens(List<Token> token) {

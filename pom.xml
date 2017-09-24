@@ -5,7 +5,7 @@
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField-root</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.3</version>
+	<version>0.0.4</version>
 	<name>AdvancedTokenField Add-on Root Project</name>
 
 	<prerequisites>
@@ -16,6 +16,11 @@
 		<module>AdvancedTokenField-addon</module>
 		<module>AdvancedTokenField-demo</module>
 	</modules>
+
+	<organization>
+		<name>fo0systems</name>
+		<url>http://fo0systems.net</url>
+	</organization>
 
 	<profiles>
 		<profile>
