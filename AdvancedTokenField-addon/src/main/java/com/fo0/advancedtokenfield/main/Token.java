@@ -1,6 +1,10 @@
 package com.fo0.advancedtokenfield.main;
 
-public class Token {
+import java.io.Serializable;
+
+public class Token implements Serializable {
+
+	private static final long serialVersionUID = -7438343157114436699L;
 
 	private String value;
 	private String style;

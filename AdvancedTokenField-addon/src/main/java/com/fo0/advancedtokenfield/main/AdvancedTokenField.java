@@ -19,6 +19,11 @@ import com.vaadin.ui.themes.ValoTheme;
 
 public class AdvancedTokenField extends CssLayout {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8139678186130686248L;
+
 	private ComboBox<Token> inputField = new ComboBox<Token>();
 	private List<Token> tokensOfField = new ArrayList<Token>();
 
