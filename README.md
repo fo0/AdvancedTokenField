@@ -14,7 +14,7 @@ TODO
 <dependency>
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>LATEST</version>
 </dependency>
 ````
 ### Sample
