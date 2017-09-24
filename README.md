@@ -17,7 +17,7 @@ TODO
 	<version>0.0.5-SNAPSHOT</version>
 </dependency>
 ````
-## Sample
+### Sample
 ````
 AdvancedTokenField tokenField = new AdvancedTokenField();
 ````
