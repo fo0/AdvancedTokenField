@@ -82,6 +82,5 @@ public class DemoUI extends UI {
 
 		// output of available tokens in inputfield
 		tokenField.getTokensOfInputField().forEach(e -> root.addComponent(new Label(e.toString())));
-
 	}
 }
