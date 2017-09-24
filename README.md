@@ -10,12 +10,13 @@ TODO
 ## Getting started
 
 ### Maven Integration
+````
 <dependency>
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField</artifactId>
 	<version>0.0.5-SNAPSHOT</version>
 </dependency>
-
+````
 ## Sample
 ````
 AdvancedTokenField tokenField = new AdvancedTokenField();
