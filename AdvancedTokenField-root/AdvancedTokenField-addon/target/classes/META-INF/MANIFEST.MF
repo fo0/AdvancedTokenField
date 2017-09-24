@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Vaadin-License-Title: Apache License 2.0
+Implementation-Title: AdvancedTokenField Add-on
+Implementation-Version: 1.0-SNAPSHOT
+Vaadin-Widgetsets: com.fo0.advancedtokenfield.AdvancedTokenField.Widge
+ tSet
+Vaadin-Package-Version: 1
+Built-By: max
+Implementation-Vendor-Id: com.fo0.advancedtokenfield
+Class-Path: vaadin-server-8.1.3.jar vaadin-sass-compiler-0.9.13.jar sa
+ c-1.3.jar flute-1.3.0.gg2.jar vaadin-shared-8.1.3.jar jsoup-1.8.3.jar
+  gentyref-1.2.0.vaadin1.jar
+Build-Jdk: 1.8.0_144
+Created-By: Maven Integration for Eclipse
+
