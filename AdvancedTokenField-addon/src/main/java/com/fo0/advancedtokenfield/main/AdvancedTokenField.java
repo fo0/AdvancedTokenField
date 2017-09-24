@@ -128,7 +128,6 @@ public class AdvancedTokenField extends CssLayout {
 		field.addComponents(lbl, btn);
 		addComponent(field, getComponentCount() - 1);
 		addTokenToInputField(token);
-		inputField.clear();
 	}
 
 	public void addTokens(List<Token> token) {
@@ -167,6 +166,7 @@ public class AdvancedTokenField extends CssLayout {
 		if (!tokensOfField.contains(token)) {
 			tokensOfField.add(token);
 		}
+		inputField.clear();
 	}
 
 	public void clearTokens() {

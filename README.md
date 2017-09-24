@@ -4,19 +4,36 @@ ${ComponentClassName} is a UI component add-on for Vaadin 8.
 
 ## Online demo
 
-Try the add-on demo at <url of the online demo>
+TODO
+
+
+## Getting started
+
+### Maven Integration
+<dependency>
+	<groupId>com.fo0.advancedtokenfield</groupId>
+	<artifactId>AdvancedTokenField</artifactId>
+	<version>0.0.5-SNAPSHOT</version>
+</dependency>
+
+## Sample
+````
+AdvancedTokenField tokenField = new AdvancedTokenField();
+````
+
+Check demo...
 
 ## Download release
 
 Official releases of this add-on are available at Vaadin Directory. For Maven instructions, download and reviews, go to http://vaadin.com/addon/AdvancedTokenField
 
 ## Building and running demo
-
+````
 git clone <url of the AdvancedTokenField repository>
 mvn clean install
 cd demo
 mvn jetty:run
-
+````
 To see the demo, navigate to http://localhost:8080/
 
 ## Development with Eclipse IDE
@@ -49,17 +66,6 @@ Debugging client side code in the AdvancedTokenField-demo project:
   - activate Super Dev Mode in the debug window of the application or by adding ?superdevmode to the URL
   - You can access Java-sources and set breakpoints inside Chrome if you enable source maps from inspector settings.
  
-## Release notes
-
-### Version 1.0-SNAPSHOT
-- ...
-- ...
-
-## Roadmap
-
-This component is developed as a hobby with no public roadmap or any guarantees of upcoming releases. That said, the following features are planned for upcoming releases:
-- ...
-- ...
 
 ## Issue tracking
 
@@ -77,34 +83,6 @@ Contributions are welcome, but there are no guarantees that they are accepted as
 
 ## License & Author
 
-Add-on is distributed under Apache License 2.0. For license terms, see LICENSE.txt.
+Add-on is distributed under Apache License 2.0 for Vaadin and MIT for my addon . For license terms, see LICENSE.txt.
 
 AdvancedTokenField is written by <...>
-
-# Developer Guide
-
-## Getting started
-
-Here is a simple example on how to try out the add-on component:
-
-<...>
-
-For a more comprehensive example, see src/test/java/org/vaadin/template/demo/DemoUI.java
-
-## Features
-
-### Feature A
-
-<...>
-
-### Feature B
-
-<...>
-
-### Feature C
-
-<...>
-
-## API
-
-AdvancedTokenField JavaDoc is available online at <...>
