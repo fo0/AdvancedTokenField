@@ -1,7 +1,7 @@
-# settings
-.settings/
-
-# Compiled class file
+# eclipse project files
+.classpath
+.project
+.settings/ class file
 *.class
 
 # Log file
