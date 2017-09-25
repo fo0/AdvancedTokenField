@@ -7,17 +7,19 @@ import com.fo0.advancedtokenfield.events.TokenRemoveEvent;
 import com.fo0.advancedtokenfield.listeners.TokenAddListener;
 import com.fo0.advancedtokenfield.listeners.TokenNewItemListener;
 import com.fo0.advancedtokenfield.listeners.TokenRemoveListener;
+import com.fo0.advancedtokenfield.model.TokenLayout;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.NativeButton;
-import com.vaadin.ui.themes.ValoTheme;
 
-public class AdvancedTokenField extends CssLayout {
+import fi.jasoft.dragdroplayouts.DDCssLayout;
+import fi.jasoft.dragdroplayouts.client.ui.LayoutDragMode;
+import fi.jasoft.dragdroplayouts.drophandlers.DefaultCssLayoutDropHandler;
+import fi.jasoft.dragdroplayouts.interfaces.DragFilter;
+
+public class AdvancedTokenField extends DDCssLayout {
 
 	/**
 	 * 
@@ -45,6 +47,26 @@ public class AdvancedTokenField extends CssLayout {
 	private void init() {
 		addStyleName(BASE_STYLE);
 		addComponent(inputField);
+		setDragMode(LayoutDragMode.CLONE);
+
+		// Enable dropping
+		setDropHandler(new DefaultCssLayoutDropHandler());
+
+		// Only allow draggin buttons
+		setDragFilter(new DragFilter() {
+			public boolean isDraggable(Component component) {
+				return component instanceof TokenLayout;
+			}
+		});
+
+		addComponentAttachListener(e -> {
+			System.out.println("attached");
+		});
+
+		addComponentDetachListener(e -> {
+			System.out.println("detached");
+		});
+
 		inputField.setItems(tokensOfField);
 		inputField.setEmptySelectionAllowed(true);
 		inputField.setItemCaptionGenerator(e -> e.getValue());
@@ -106,28 +128,17 @@ public class AdvancedTokenField extends CssLayout {
 	}
 
 	public void removeTokenFromLayout(TokenRemoveEvent event) {
-		removeComponent(event.getComponent());
+		removeComponent(event.getTokenLayout());
 	}
 
 	public void addToken(Token token) {
-		CssLayout field = new CssLayout();
-		field.setData(token);
-		field.addStyleName("flat");
-		field.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-
-		if (token.getStyle() != null && !token.getStyle().isEmpty())
-			field.addStyleName(token.getStyle());
-
-		Label lbl = new Label(token.getValue());
-		NativeButton btn = new NativeButton();
-		btn.setIcon(VaadinIcons.CLOSE);
-		btn.addClickListener(e -> {
-			removeTokenFromLayout(tokenRemoveListener.action(new TokenRemoveEvent(field, token)));
+		TokenLayout tokenLayout = new TokenLayout(token);
+		tokenLayout.getBtn().addClickListener(e -> {
+			removeTokenFromLayout(tokenRemoveListener.action(new TokenRemoveEvent(tokenLayout, token)));
 		});
-
-		field.addComponents(lbl, btn);
-		addComponent(field, getComponentCount() - 1);
+		
 		addTokenToInputField(token);
+		addComponent(tokenLayout, getComponentCount() - 1);
 	}
 
 	public void addTokens(List<Token> token) {

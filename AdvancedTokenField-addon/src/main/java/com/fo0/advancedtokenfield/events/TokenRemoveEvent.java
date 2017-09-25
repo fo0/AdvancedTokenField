@@ -1,25 +1,25 @@
 package com.fo0.advancedtokenfield.events;
 
 import com.fo0.advancedtokenfield.main.Token;
-import com.vaadin.ui.Component;
+import com.fo0.advancedtokenfield.model.TokenLayout;
 
 public class TokenRemoveEvent {
 
-	private Component component;
+	private TokenLayout TokenLayout;
 	private Token token;
 
-	public TokenRemoveEvent(Component component, Token token) {
+	public TokenRemoveEvent(TokenLayout TokenLayout, Token token) {
 		super();
-		this.component = component;
+		this.TokenLayout = TokenLayout;
 		this.token = token;
 	}
 
-	public Component getComponent() {
-		return component;
+	public TokenLayout getTokenLayout() {
+		return TokenLayout;
 	}
 
-	public void setComponent(Component component) {
-		this.component = component;
+	public void setTokenLayout(TokenLayout TokenLayout) {
+		this.TokenLayout = TokenLayout;
 	}
 
 	public Token getToken() {
@@ -34,7 +34,7 @@ public class TokenRemoveEvent {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((component == null) ? 0 : component.hashCode());
+		result = prime * result + ((TokenLayout == null) ? 0 : TokenLayout.hashCode());
 		result = prime * result + ((token == null) ? 0 : token.hashCode());
 		return result;
 	}
@@ -48,10 +48,10 @@ public class TokenRemoveEvent {
 		if (!(obj instanceof TokenRemoveEvent))
 			return false;
 		TokenRemoveEvent other = (TokenRemoveEvent) obj;
-		if (component == null) {
-			if (other.component != null)
+		if (TokenLayout == null) {
+			if (other.TokenLayout != null)
 				return false;
-		} else if (!component.equals(other.component))
+		} else if (!TokenLayout.equals(other.TokenLayout))
 			return false;
 		if (token == null) {
 			if (other.token != null)
@@ -63,7 +63,7 @@ public class TokenRemoveEvent {
 
 	@Override
 	public String toString() {
-		return "TokenRemoveEvent [" + (component != null ? "component=" + component + ", " : "")
+		return "TokenRemoveEvent [" + (TokenLayout != null ? "TokenLayout=" + TokenLayout + ", " : "")
 				+ (token != null ? "token=" + token : "") + "]";
 	}
 

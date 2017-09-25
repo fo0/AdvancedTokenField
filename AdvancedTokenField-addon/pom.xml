@@ -77,6 +77,29 @@
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
+
+
+		<!-- just for right now, creating this layout later with vaadin 8 components -->
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>dragdroplayouts</artifactId>
+			<version>1.4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-compatibility-server</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-compatibility-client</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-compatibility-shared</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
