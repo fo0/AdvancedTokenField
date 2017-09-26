@@ -40,6 +40,17 @@ public class AdvancedTokenField extends DDCssLayout {
 		init();
 	}
 
+	public AdvancedTokenField(boolean inputFieldVisible) {
+		inputField.setVisible(inputFieldVisible);
+		init();
+	}
+
+	public AdvancedTokenField(List<Token> tokens, boolean inputFieldVisible) {
+		this.tokensOfField.addAll(tokens);
+		inputField.setVisible(inputFieldVisible);
+		init();
+	}
+
 	public AdvancedTokenField() {
 		init();
 	}
@@ -57,14 +68,6 @@ public class AdvancedTokenField extends DDCssLayout {
 			public boolean isDraggable(Component component) {
 				return component instanceof TokenLayout;
 			}
-		});
-
-		addComponentAttachListener(e -> {
-			System.out.println("attached");
-		});
-
-		addComponentDetachListener(e -> {
-			System.out.println("detached");
 		});
 
 		inputField.setItems(tokensOfField);
@@ -136,7 +139,7 @@ public class AdvancedTokenField extends DDCssLayout {
 		tokenLayout.getBtn().addClickListener(e -> {
 			removeTokenFromLayout(tokenRemoveListener.action(new TokenRemoveEvent(tokenLayout, token)));
 		});
-		
+
 		addTokenToInputField(token);
 		addComponent(tokenLayout, getComponentCount() - 1);
 	}
@@ -186,6 +189,11 @@ public class AdvancedTokenField extends DDCssLayout {
 				removeComponent(getComponent(i));
 			}
 		}
+	}
+
+	public void clearAll() {
+		clearTokens();
+		tokensOfField.clear();
 	}
 
 }

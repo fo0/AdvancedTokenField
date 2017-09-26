@@ -5,7 +5,7 @@
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField-demo</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.5</version>
+	<version>0.0.6</version>
 	<name>AdvancedTokenField Add-on Demo</name>
 
 	<prerequisites>
@@ -21,24 +21,13 @@
 		<jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version>
 	</properties>
 
-    <!--
-	<organization>
-		<name>My Name</name>
-		<url>https://github.com/mygithubaccount/AdvancedTokenField/</url>
-	</organization>
-
-	<scm>
-		<url>git://github.com/mygithubaccount/AdvancedTokenField.git</url>
-		<connection>scm:git:git://github.com/mygithubaccount/AdvancedTokenField.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com:/mygithubaccount/${componentClassName}.git</developerConnection>
-		<tag>AdvancedTokenField add-on for Vaadin</tag>
-	</scm>
-
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/mygithubaccount/AdvancedTokenField/issues</url>
-	</issueManagement>
-    -->
+	<!-- <organization> <name>My Name</name> <url>https://github.com/mygithubaccount/AdvancedTokenField/</url> 
+		</organization> <scm> <url>git://github.com/mygithubaccount/AdvancedTokenField.git</url> 
+		<connection>scm:git:git://github.com/mygithubaccount/AdvancedTokenField.git</connection> 
+		<developerConnection>scm:git:ssh://git@github.com:/mygithubaccount/${componentClassName}.git</developerConnection> 
+		<tag>AdvancedTokenField add-on for Vaadin</tag> </scm> <issueManagement> 
+		<system>GitHub</system> <url>https://github.com/mygithubaccount/AdvancedTokenField/issues</url> 
+		</issueManagement> -->
 
 	<licenses>
 		<license>
@@ -71,7 +60,7 @@
 		<dependency>
 			<groupId>com.fo0.advancedtokenfield</groupId>
 			<artifactId>AdvancedTokenField</artifactId>
-			<version>0.0.5-SNAPSHOT</version>
+			<version>[0.0.1, )</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
