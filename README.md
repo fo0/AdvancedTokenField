@@ -1,6 +1,6 @@
 # AdvancedTokenField Add-on for Vaadin 8
 
-${ComponentClassName} is a UI component add-on for Vaadin 8.
+AdvancedTokenField is a UI component add-on for Vaadin 8.
 
 ## Online demo
 
