@@ -10,11 +10,12 @@ TODO
 ## Getting started
 
 ### Maven Integration
+For latest dependency:
 ````
 <dependency>
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField</artifactId>
-	<version>LATEST</version>
+	<version>[0.0.5, )</version>
 </dependency>
 ````
 ### Sample
