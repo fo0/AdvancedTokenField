@@ -1,0 +1,7 @@
+<jboss-deployment-structure>
+	<deployment>
+		<dependencies>
+			<module name="org.dom4j" export="TRUE" />
+		</dependencies>
+	</deployment>
+</jboss-deployment-structure>
