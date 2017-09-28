@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fo0.advancedtokenfield.events.TokenRemoveEvent;
-import com.fo0.advancedtokenfield.listeners.TokenAddListener;
-import com.fo0.advancedtokenfield.listeners.TokenNewItemListener;
-import com.fo0.advancedtokenfield.listeners.TokenRemoveListener;
+import com.fo0.advancedtokenfield.interceptor.TokenAddInterceptor;
+import com.fo0.advancedtokenfield.interceptor.TokenNewItemInterceptor;
+import com.fo0.advancedtokenfield.interceptor.TokenRemoveInterceptor;
+import com.fo0.advancedtokenfield.listener.TokenAddListener;
+import com.fo0.advancedtokenfield.listener.TokenNewItemListener;
+import com.fo0.advancedtokenfield.listener.TokenRemoveListener;
 import com.fo0.advancedtokenfield.model.TokenLayout;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
@@ -29,6 +32,16 @@ public class AdvancedTokenField extends DDCssLayout {
 	private ComboBox<Token> inputField = new ComboBox<Token>();
 	private List<Token> tokensOfField = new ArrayList<Token>();
 
+	/**
+	 * Interceptors
+	 */
+	private TokenRemoveInterceptor tokenRemoveInterceptor;
+	private TokenAddInterceptor tokenAddInterceptor;
+	private TokenNewItemInterceptor tokenNewItemInterceptor;
+
+	/**
+	 * Listener
+	 */
 	private TokenRemoveListener tokenRemoveListener;
 	private TokenAddListener tokenAddListener;
 	private TokenNewItemListener tokenNewItemListener;
@@ -78,11 +91,11 @@ public class AdvancedTokenField extends DDCssLayout {
 
 			@Override
 			public void handleAction(Object sender, Object target) {
-				addToken(tokenAddListener.action(inputField.getValue()));
+				addToken(tokenAddInterceptor.action(inputField.getValue()));
 			}
 		});
 
-		tokenAddListener = new TokenAddListener() {
+		tokenAddInterceptor = new TokenAddInterceptor() {
 
 			@Override
 			public Token action(Token token) {
@@ -90,7 +103,7 @@ public class AdvancedTokenField extends DDCssLayout {
 			}
 		};
 
-		tokenRemoveListener = new TokenRemoveListener() {
+		tokenRemoveInterceptor = new TokenRemoveInterceptor() {
 
 			@Override
 			public TokenRemoveEvent action(TokenRemoveEvent event) {
@@ -98,7 +111,7 @@ public class AdvancedTokenField extends DDCssLayout {
 			}
 		};
 
-		tokenNewItemListener = new TokenNewItemListener() {
+		tokenNewItemInterceptor = new TokenNewItemInterceptor() {
 
 			@Override
 			public Token action(String token) {
@@ -110,38 +123,33 @@ public class AdvancedTokenField extends DDCssLayout {
 	public void setAllowNewItems(boolean allow) {
 		if (allow) {
 			inputField.setNewItemHandler(e -> {
-				addToken(tokenAddListener.action(tokenNewItemListener.action(e)));
+				addToken(tokenAddInterceptor.action(tokenNewItemInterceptor.action(e)));
 				inputField.clear();
+				if (tokenNewItemListener != null)
+					tokenNewItemListener.action(e);
 			});
 		} else {
 			inputField.setNewItemHandler(null);
 		}
 	}
 
-	public void addTokenRemoveListener(TokenRemoveListener listener) {
-		this.tokenRemoveListener = listener;
-	}
-
-	public void addTokenAddListener(TokenAddListener listener) {
-		this.tokenAddListener = listener;
-	}
-
-	public void addTokenAddNewItemListener(TokenNewItemListener listener) {
-		this.tokenNewItemListener = listener;
-	}
-
 	public void removeTokenFromLayout(TokenRemoveEvent event) {
 		removeComponent(event.getTokenLayout());
+		if (tokenRemoveListener != null)
+			tokenRemoveListener.action(event);
 	}
 
 	public void addToken(Token token) {
 		TokenLayout tokenLayout = new TokenLayout(token);
 		tokenLayout.getBtn().addClickListener(e -> {
-			removeTokenFromLayout(tokenRemoveListener.action(new TokenRemoveEvent(tokenLayout, token)));
+			removeTokenFromLayout(tokenRemoveInterceptor.action(new TokenRemoveEvent(tokenLayout, token)));
 		});
 
 		addTokenToInputField(token);
 		addComponent(tokenLayout, getComponentCount() - 1);
+
+		if (tokenAddListener != null)
+			tokenAddListener.action(token);
 	}
 
 	public void addTokens(List<Token> token) {
@@ -194,6 +202,38 @@ public class AdvancedTokenField extends DDCssLayout {
 	public void clearAll() {
 		clearTokens();
 		tokensOfField.clear();
+	}
+
+	/**
+	 * Listener
+	 */
+
+	public void addTokenRemoveListener(TokenRemoveListener listener) {
+		this.tokenRemoveListener = listener;
+	}
+
+	public void addTokenAddListener(TokenAddListener listener) {
+		this.tokenAddListener = listener;
+	}
+
+	public void addTokenAddNewItemListener(TokenNewItemListener listener) {
+		this.tokenNewItemListener = listener;
+	}
+
+	/**
+	 * Interceptors
+	 */
+
+	public void addTokenRemoveInterceptor(TokenRemoveInterceptor interceptor) {
+		this.tokenRemoveInterceptor = interceptor;
+	}
+
+	public void addTokenAddInterceptor(TokenAddInterceptor interceptor) {
+		this.tokenAddInterceptor = interceptor;
+	}
+
+	public void addTokenAddNewItemInterceptor(TokenNewItemInterceptor interceptor) {
+		this.tokenNewItemInterceptor = interceptor;
 	}
 
 }

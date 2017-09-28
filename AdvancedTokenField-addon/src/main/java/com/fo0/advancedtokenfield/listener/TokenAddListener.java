@@ -1,4 +1,4 @@
-package com.fo0.advancedtokenfield.listeners;
+package com.fo0.advancedtokenfield.listener;
 
 import com.fo0.advancedtokenfield.main.Token;
 

@@ -9,6 +9,8 @@ import com.vaadin.ui.themes.ValoTheme;
 
 public class TokenLayout extends CssLayout {
 
+	private static final long serialVersionUID = 1818425531699295539L;
+	
 	private Label lbl = new Label();
 	private NativeButton btn = new NativeButton();
 

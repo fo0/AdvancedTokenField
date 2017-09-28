@@ -4,15 +4,17 @@ import java.util.Arrays;
 
 import javax.servlet.annotation.WebServlet;
 
-import com.fo0.advancedtokenfield.listeners.TokenNewItemListener;
-import com.fo0.advancedtokenfield.listeners.TokenRemoveListener;
+import com.fo0.advancedtokenfield.interceptor.TokenNewItemInterceptor;
+import com.fo0.advancedtokenfield.interceptor.TokenRemoveInterceptor;
 import com.fo0.advancedtokenfield.main.AdvancedTokenField;
 import com.fo0.advancedtokenfield.main.Token;
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.shared.communication.PushMode;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
@@ -22,6 +24,7 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("demo")
 @Title("AdvancedTokenField Add-on Demo")
 @SuppressWarnings("serial")
+@Push(PushMode.AUTOMATIC)
 public class DemoUI extends UI {
 
 	@WebServlet(value = "/*", asyncSupported = true)
@@ -54,20 +57,20 @@ public class DemoUI extends UI {
 		tokenField.addTokens(Arrays.asList(new Token[] { new Token("Token5"), new Token("Token6") }));
 
 		// to override defaults
-		tokenField.addTokenAddListener(token -> {
+		tokenField.addTokenAddInterceptor(token -> {
 			Notification.show(token.getClass().getSimpleName(), "Adding Token: " + token, Type.HUMANIZED_MESSAGE);
 			return token;
 		});
 
 		// to override defaults
-		tokenField.addTokenAddNewItemListener((TokenNewItemListener) value -> {
+		tokenField.addTokenAddNewItemInterceptor((TokenNewItemInterceptor) value -> {
 			Token token = new Token(value);
 			Notification.show(value.getClass().getSimpleName(), "Add New Token: " + token, Type.TRAY_NOTIFICATION);
 			return token;
 		});
 
 		// to override defaults
-		tokenField.addTokenRemoveListener((TokenRemoveListener) removeEvent -> {
+		tokenField.addTokenRemoveInterceptor((TokenRemoveInterceptor) removeEvent -> {
 			Notification.show(removeEvent.getClass().getSimpleName(), "Removing Token: " + removeEvent.getToken(),
 					Type.HUMANIZED_MESSAGE);
 			return removeEvent;
