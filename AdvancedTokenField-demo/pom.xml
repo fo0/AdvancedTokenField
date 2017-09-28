@@ -5,7 +5,7 @@
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField-demo</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.6</version>
+	<version>0.0.63</version>
 	<name>AdvancedTokenField Add-on Demo</name>
 
 	<prerequisites>

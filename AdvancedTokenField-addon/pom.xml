@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField</artifactId>
-	<packaging>jar</packaging>
-	<version>0.0.6</version>
+	<packaging>bundle</packaging>
+	<version>0.0.63</version>
 	<name>AdvancedTokenField Add-on</name>
 
 	<prerequisites>
@@ -186,7 +186,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Export-Package>!fi.jasoft.dragdroplayouts.*</Export-Package>
+						<Export-Package>com.fo0.advancedtokenfield.*,!fi.jasoft.dragdroplayouts.*</Export-Package>
 						<Import-Package>!com.google.gwt.*,!com.vaadin.client.*,!fi.jasoft.dragdroplayouts.*,!com.vaadin.v7.*,*</Import-Package>
 					</instructions>
 				</configuration>
