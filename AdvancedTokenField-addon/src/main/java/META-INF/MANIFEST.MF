@@ -6,4 +6,4 @@ Implementation-Vendor: ${Implementation-Vendor}
 Implementation-Title: ${Implementation-Title}
 Implementation-Version: ${Implementation-Version}
 Bundle-ManifestVersion: 2
-Bundle-SymbolicName: com.fo0.advancedtokenield.AdvancedTokenField
+Bundle-SymbolicName: com.fo0.advancedtokenield.main.AdvancedTokenField
