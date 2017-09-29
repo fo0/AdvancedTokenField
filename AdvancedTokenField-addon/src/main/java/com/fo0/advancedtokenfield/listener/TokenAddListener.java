@@ -4,6 +4,6 @@ import com.fo0.advancedtokenfield.main.Token;
 
 public interface TokenAddListener {
 
-	Token action(Token token);
+	void action(Token token);
 
 }

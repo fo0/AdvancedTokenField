@@ -32,13 +32,17 @@ public class DemoUI extends UI {
 	public static class Servlet extends VaadinServlet {
 	}
 
+	private VerticalLayout root;
+	private AdvancedTokenField tokenField;
+	private VerticalLayout debugLayout;
+
 	@Override
 	protected void init(VaadinRequest request) {
-		AdvancedTokenField tokenField = new AdvancedTokenField();
+		tokenField = new AdvancedTokenField();
 		// allow new items to be added to layout-tokens and combobox
 		tokenField.setAllowNewItems(true);
 
-		VerticalLayout root = new VerticalLayout();
+		root = new VerticalLayout();
 		root.addComponent(tokenField);
 		setContent(root);
 
@@ -76,14 +80,30 @@ public class DemoUI extends UI {
 			return removeEvent;
 		});
 
-		root.addComponent(new Label("------added-------"));
+		debugLayout = new VerticalLayout();
+		root.addComponent(debugLayout);
+
+		tokenField.addTokenAddListener(add -> {
+			addDebugLog();
+		});
+
+		tokenField.addTokenRemoveListener(remove -> {
+			addDebugLog();
+		});
+
+		addDebugLog();
+	}
+
+	public void addDebugLog() {
+		debugLayout.removeAllComponents();
+		debugLayout.addComponent(new Label("------added-------"));
 
 		// output of visible _added_ tokens
-		tokenField.getTokens().forEach(e -> root.addComponent(new Label(e.toString())));
-		root.addComponent(new Label());
-		root.addComponent(new Label("------inputfield-------"));
+		tokenField.getTokens().forEach(e -> debugLayout.addComponent(new Label(e.toString())));
+		debugLayout.addComponent(new Label());
+		debugLayout.addComponent(new Label("------inputfield-------"));
 
 		// output of available tokens in inputfield
-		tokenField.getTokensOfInputField().forEach(e -> root.addComponent(new Label(e.toString())));
+		tokenField.getTokensOfInputField().forEach(e -> debugLayout.addComponent(new Label(e.toString())));
 	}
 }

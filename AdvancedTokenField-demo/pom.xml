@@ -5,7 +5,7 @@
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField-demo</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.63</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>AdvancedTokenField Add-on Demo</name>
 
 	<prerequisites>
@@ -60,7 +60,7 @@
 		<dependency>
 			<groupId>com.fo0.advancedtokenfield</groupId>
 			<artifactId>AdvancedTokenField</artifactId>
-			<version>[0.0.1, )</version>
+			<version>[0.1.0, )</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
