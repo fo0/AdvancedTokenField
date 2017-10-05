@@ -4,7 +4,7 @@ AdvancedTokenField is a UI component add-on for Vaadin 8.
 
 ## Online demo
 
-TODO
+http://fo0.me:8080/AdvancedTokenField
 
 
 ## Getting started
