@@ -11,7 +11,7 @@ import com.fo0.advancedtokenfield.listener.TokenAddListener;
 import com.fo0.advancedtokenfield.listener.TokenNewItemListener;
 import com.fo0.advancedtokenfield.listener.TokenRemoveListener;
 import com.fo0.advancedtokenfield.model.TokenLayout;
-import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
@@ -87,11 +87,15 @@ public class AdvancedTokenField extends DDCssLayout {
 		inputField.setEmptySelectionAllowed(true);
 		inputField.setItemCaptionGenerator(e -> e.getValue());
 
-		inputField.addShortcutListener(new ShortcutListener(null, ShortcutAction.KeyCode.ENTER, null) {
+		inputField.addShortcutListener(new ShortcutListener("Enter", KeyCode.ENTER, null) {
+
+			private static final long serialVersionUID = -3010772759203328514L;
 
 			@Override
 			public void handleAction(Object sender, Object target) {
-				addToken(tokenAddInterceptor.action(inputField.getValue()));
+				// ignore nulls and empty values
+				if (inputField.getValue() != null && !inputField.getValue().getValue().isEmpty())
+					addToken(tokenAddInterceptor.action(inputField.getValue()));
 			}
 		});
 
