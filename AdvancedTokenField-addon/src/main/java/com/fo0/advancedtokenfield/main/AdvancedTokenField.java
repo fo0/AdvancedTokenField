@@ -7,6 +7,7 @@ import com.fo0.advancedtokenfield.events.TokenRemoveEvent;
 import com.fo0.advancedtokenfield.interceptor.TokenAddInterceptor;
 import com.fo0.advancedtokenfield.interceptor.TokenNewItemInterceptor;
 import com.fo0.advancedtokenfield.interceptor.TokenRemoveInterceptor;
+import com.fo0.advancedtokenfield.listener.OnEnterListener;
 import com.fo0.advancedtokenfield.listener.TokenAddListener;
 import com.fo0.advancedtokenfield.listener.TokenNewItemListener;
 import com.fo0.advancedtokenfield.listener.TokenRemoveListener;
@@ -45,6 +46,8 @@ public class AdvancedTokenField extends DDCssLayout {
 	private TokenRemoveListener tokenRemoveListener;
 	private TokenAddListener tokenAddListener;
 	private TokenNewItemListener tokenNewItemListener;
+
+	private OnEnterListener enterListener;
 
 	private static final String BASE_STYLE = "advancedtokenfield-layouttokens";
 
@@ -93,9 +96,15 @@ public class AdvancedTokenField extends DDCssLayout {
 
 			@Override
 			public void handleAction(Object sender, Object target) {
-				// ignore nulls and empty values
-				if (inputField.getValue() != null && !inputField.getValue().getValue().isEmpty())
-					addToken(tokenAddInterceptor.action(inputField.getValue()));
+				Token tokenValue = inputField.getValue();
+
+				if (tokenValue != null && !tokenValue.getValue().isEmpty()) {
+					addToken(tokenAddInterceptor.action(tokenValue));
+				}
+
+				if (enterListener != null) {
+					enterListener.action(tokenValue);
+				}
 			}
 		});
 
@@ -222,6 +231,10 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	public void addTokenAddNewItemListener(TokenNewItemListener listener) {
 		this.tokenNewItemListener = listener;
+	}
+
+	public void addOnEnterListener(OnEnterListener listener) {
+		enterListener = listener;
 	}
 
 	/**

@@ -5,7 +5,7 @@
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField</artifactId>
 	<packaging>bundle</packaging>
-	<version>0.1.01</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<name>AdvancedTokenField Add-on</name>
 
 	<prerequisites>
@@ -21,8 +21,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<vaadin.version>8.1.4</vaadin.version>
-		<vaadin.plugin.version>8.1.4</vaadin.plugin.version>
+		<vaadin.version>8.1.7</vaadin.version>
+		<vaadin.plugin.version>8.1.7</vaadin.plugin.version>
 
 		<!-- ZIP Manifest fields -->
 		<Implementation-Version>${project.version}</Implementation-Version>
