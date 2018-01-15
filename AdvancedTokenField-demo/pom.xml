@@ -5,7 +5,7 @@
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField-demo</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.3</version>
 	<name>AdvancedTokenField Add-on Demo</name>
 
 	<prerequisites>
@@ -16,8 +16,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<vaadin.version>8.1.7</vaadin.version>
-		<vaadin.plugin.version>8.1.7</vaadin.plugin.version>
+		<vaadin.version>8.2.1</vaadin.version>
+		<vaadin.plugin.version>8.2.1</vaadin.plugin.version>
 		<jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version>
 	</properties>
 

@@ -99,7 +99,7 @@ public class AdvancedTokenField extends DDCssLayout {
 				Token tokenValue = inputField.getValue();
 
 				if (tokenValue != null && !tokenValue.getValue().isEmpty()) {
-					addToken(tokenAddInterceptor.action(tokenValue));
+					addToken(tokenValue);
 				}
 
 				if (enterListener != null) {
@@ -153,16 +153,17 @@ public class AdvancedTokenField extends DDCssLayout {
 	}
 
 	public void addToken(Token token) {
-		TokenLayout tokenLayout = new TokenLayout(token);
+		Token tokenData = tokenAddInterceptor.action(token);
+		TokenLayout tokenLayout = new TokenLayout(tokenData);
 		tokenLayout.getBtn().addClickListener(e -> {
-			removeTokenFromLayout(tokenRemoveInterceptor.action(new TokenRemoveEvent(tokenLayout, token)));
+			removeTokenFromLayout(tokenRemoveInterceptor.action(new TokenRemoveEvent(tokenLayout, tokenData)));
 		});
 
-		addTokenToInputField(token);
+		addTokenToInputField(tokenData);
 		addComponent(tokenLayout, getComponentCount() - 1);
 
 		if (tokenAddListener != null)
-			tokenAddListener.action(token);
+			tokenAddListener.action(tokenData);
 	}
 
 	public void addTokens(List<Token> token) {
