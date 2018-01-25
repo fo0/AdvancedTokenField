@@ -154,6 +154,11 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	public void addToken(Token token) {
 		Token tokenData = tokenAddInterceptor.action(token);
+		if (tokenData == null) {
+			// filter empty tokens
+			return;
+		}
+		
 		TokenLayout tokenLayout = new TokenLayout(tokenData);
 		tokenLayout.getBtn().addClickListener(e -> {
 			removeTokenFromLayout(tokenRemoveInterceptor.action(new TokenRemoveEvent(tokenLayout, tokenData)));
