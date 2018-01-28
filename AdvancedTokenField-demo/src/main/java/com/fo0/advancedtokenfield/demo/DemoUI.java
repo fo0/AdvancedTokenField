@@ -45,7 +45,9 @@ public class DemoUI extends UI {
 		tokenField.setAllowNewItems(true);
 
 		root = new VerticalLayout();
-		root.addComponent(new AdvancedTokenField(Stream.of(new Token("first")).collect(Collectors.toList())));
+		AdvancedTokenField ft = new AdvancedTokenField(Stream.of(new Token("DragMe")).collect(Collectors.toList()));
+		ft.addToken(new Token("DragMe"));
+		root.addComponent(ft);
 		root.addComponent(tokenField);
 		setContent(root);
 

@@ -86,6 +86,8 @@ public class AdvancedTokenField extends DDCssLayout {
 
 		// Only allow draggin buttons
 		setDragFilter(new DragFilter() {
+			private static final long serialVersionUID = 5221913366037820701L;
+
 			public boolean isDraggable(Component component) {
 				return component instanceof TokenLayout;
 			}
@@ -170,11 +172,23 @@ public class AdvancedTokenField extends DDCssLayout {
 	}
 
 	@Override
+	public void addComponentAsFirst(Component c) {
+		System.out.println("add detecting class: " + c.getClass());
+		if (c instanceof TokenLayout) {
+			// detect the drag and drop from layout
+			addToken(((TokenLayout) c).getToken(), getComponentCount());
+			return;
+		}
+
+		super.addComponent(c);
+	}
+
+	@Override
 	public void addComponent(Component c) {
 		System.out.println("add detecting class: " + c.getClass());
 		if (c instanceof TokenLayout) {
 			// detect the drag and drop from layout
-			addToken(((TokenLayout) c).getToken());
+			addToken(((TokenLayout) c).getToken(), -1);
 			return;
 		}
 
@@ -186,7 +200,7 @@ public class AdvancedTokenField extends DDCssLayout {
 		System.out.println("add detecting class: " + c.getClass() + " at index: " + index);
 		if (c instanceof TokenLayout) {
 			// detect the drag and drop from layout
-			addToken(((TokenLayout) c).getToken());
+			addToken(((TokenLayout) c).getToken(), index);
 			return;
 		}
 
@@ -206,7 +220,10 @@ public class AdvancedTokenField extends DDCssLayout {
 		for (Iterator<Component> iterator = iterator(); iterator.hasNext();) {
 			Component component = (Component) iterator.next();
 			if (component instanceof TokenLayout) {
-				tl = (TokenLayout) component;
+				if (((TokenLayout) component).getToken().equals(token)) {
+					tl = (TokenLayout) component;
+					break;
+				}
 			}
 		}
 
