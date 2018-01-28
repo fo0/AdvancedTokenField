@@ -1,9 +1,9 @@
 package com.fo0.advancedtokenfield.interceptor;
 
-import com.fo0.advancedtokenfield.events.TokenRemoveEvent;
+import com.fo0.advancedtokenfield.main.Token;
 
 public interface TokenRemoveInterceptor {
 
-	TokenRemoveEvent action(TokenRemoveEvent event);
+	Token action(Token event);
 
 }

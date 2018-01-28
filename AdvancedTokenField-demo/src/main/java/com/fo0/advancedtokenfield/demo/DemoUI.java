@@ -1,6 +1,8 @@
 package com.fo0.advancedtokenfield.demo;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -43,6 +45,7 @@ public class DemoUI extends UI {
 		tokenField.setAllowNewItems(true);
 
 		root = new VerticalLayout();
+		root.addComponent(new AdvancedTokenField(Stream.of(new Token("first")).collect(Collectors.toList())));
 		root.addComponent(tokenField);
 		setContent(root);
 
@@ -68,20 +71,23 @@ public class DemoUI extends UI {
 
 		// to override defaults
 		tokenField.addTokenAddNewItemInterceptor((TokenNewItemInterceptor) value -> {
-			Token token = new Token(value);
-			Notification.show(value.getClass().getSimpleName(), "Add New Token: " + token, Type.TRAY_NOTIFICATION);
-			return token;
+			Notification.show(value.getClass().getSimpleName(), "Add New Token: " + value, Type.TRAY_NOTIFICATION);
+			return value;
 		});
 
 		// to override defaults
 		tokenField.addTokenRemoveInterceptor((TokenRemoveInterceptor) removeEvent -> {
-			Notification.show(removeEvent.getClass().getSimpleName(), "Removing Token: " + removeEvent.getToken(),
+			Notification.show(removeEvent.getClass().getSimpleName(), "Removing Token: " + removeEvent,
 					Type.HUMANIZED_MESSAGE);
 			return removeEvent;
 		});
 
 		debugLayout = new VerticalLayout();
 		root.addComponent(debugLayout);
+
+		tokenField.addTokenAddNewItemListener(add -> {
+			addDebugLog();
+		});
 
 		tokenField.addTokenAddListener(add -> {
 			addDebugLog();

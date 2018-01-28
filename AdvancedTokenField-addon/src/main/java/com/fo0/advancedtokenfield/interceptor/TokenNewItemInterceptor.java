@@ -4,6 +4,6 @@ import com.fo0.advancedtokenfield.main.Token;
 
 public interface TokenNewItemInterceptor {
 
-	Token action(String token);
+	Token action(Token token);
 
 }

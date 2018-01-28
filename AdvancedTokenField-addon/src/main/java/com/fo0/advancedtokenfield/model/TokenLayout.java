@@ -11,11 +11,13 @@ public class TokenLayout extends CssLayout {
 
 	private static final long serialVersionUID = 1818425531699295539L;
 
+	private Token token = null;
 	private Label lbl = new Label();
 	private NativeButton btn = new NativeButton();
 
 	public TokenLayout(Token token) {
 		super();
+		this.token = token;
 		if (token != null) {
 			lbl.setValue(token.getValue());
 		}
@@ -47,6 +49,14 @@ public class TokenLayout extends CssLayout {
 		this.btn = btn;
 	}
 
+	public Token getToken() {
+		return token;
+	}
+
+	public void setToken(Token token) {
+		this.token = token;
+	}
+
 	@Override
 	public String toString() {
 		return "TokenLayout [" + (lbl != null ? "lbl=" + lbl + ", " : "") + (btn != null ? "btn=" + btn : "") + "]";
@@ -58,6 +68,7 @@ public class TokenLayout extends CssLayout {
 		int result = super.hashCode();
 		result = prime * result + ((btn == null) ? 0 : btn.hashCode());
 		result = prime * result + ((lbl == null) ? 0 : lbl.hashCode());
+		result = prime * result + ((token == null) ? 0 : token.hashCode());
 		return result;
 	}
 
@@ -79,6 +90,11 @@ public class TokenLayout extends CssLayout {
 			if (other.lbl != null)
 				return false;
 		} else if (!lbl.equals(other.lbl))
+			return false;
+		if (token == null) {
+			if (other.token != null)
+				return false;
+		} else if (!token.equals(other.token))
 			return false;
 		return true;
 	}
