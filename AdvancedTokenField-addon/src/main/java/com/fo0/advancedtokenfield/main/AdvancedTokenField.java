@@ -3,6 +3,7 @@ package com.fo0.advancedtokenfield.main;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.fo0.advancedtokenfield.interceptor.TokenAddInterceptor;
 import com.fo0.advancedtokenfield.interceptor.TokenNewItemInterceptor;
@@ -303,11 +304,17 @@ public class AdvancedTokenField extends DDCssLayout {
 	}
 
 	public void clearTokens() {
-		for (int i = 0; i < getComponentCount(); i++) {
-			if (getComponent(i) instanceof CssLayout) {
-				removeComponent(getComponent(i));
+		List<Component> componentsToRemove = new ArrayList<Component>();
+
+		IntStream.range(0, getComponentCount()).forEach(e -> {
+			if (getComponent(e) instanceof CssLayout) {
+				componentsToRemove.add(getComponent(e));
 			}
-		}
+		});
+
+		componentsToRemove.stream().forEach(e -> {
+			removeComponent(e);
+		});
 	}
 
 	public void clearAll() {
