@@ -1,5 +1,6 @@
 package com.fo0.advancedtokenfield.model;
 
+import com.fo0.advancedtokenfield.main.Token;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;

@@ -1,12 +1,10 @@
 package com.fo0.advancedtokenfield.main;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import com.fo0.advancedtokenfield.enums.TokenFieldLayout;
 import com.fo0.advancedtokenfield.interceptor.TokenAddInterceptor;
 import com.fo0.advancedtokenfield.interceptor.TokenNewItemInterceptor;
 import com.fo0.advancedtokenfield.interceptor.TokenRemoveInterceptor;
@@ -14,29 +12,28 @@ import com.fo0.advancedtokenfield.listener.OnEnterListener;
 import com.fo0.advancedtokenfield.listener.TokenAddListener;
 import com.fo0.advancedtokenfield.listener.TokenNewItemListener;
 import com.fo0.advancedtokenfield.listener.TokenRemoveListener;
-import com.fo0.advancedtokenfield.model.Token;
 import com.fo0.advancedtokenfield.model.TokenLayout;
-import com.vaadin.data.HasValue;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.util.ReflectTools;
 
 import fi.jasoft.dragdroplayouts.DDCssLayout;
 import fi.jasoft.dragdroplayouts.client.ui.LayoutDragMode;
 import fi.jasoft.dragdroplayouts.drophandlers.DefaultCssLayoutDropHandler;
+import fi.jasoft.dragdroplayouts.interfaces.DragFilter;
 
-public class AdvancedTokenField extends DDCssLayout implements HasValue<Collection<Token>> {
+public class AdvancedTokenField extends DDCssLayout {
 
-	private static final long serialVersionUID = -8339803297037565191L;
-
-	public static boolean ALLOW_DUPLICATED_TOKEN_VALUES = true;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8139678186130686248L;
 
 	private ComboBox<Token> inputField = new ComboBox<Token>();
-	private Collection<Token> tokensOfField = new ArrayList<Token>();
+	private List<Token> tokensOfField = new ArrayList<Token>();
 
 	/**
 	 * Interceptors
@@ -56,8 +53,8 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 
 	private static final String BASE_STYLE = "advancedtokenfield-layouttokens";
 
-	public AdvancedTokenField(Collection<Token> tokens) {
-		this.tokensOfField = tokens;
+	public AdvancedTokenField(List<Token> tokens) {
+		this.tokensOfField.addAll(tokens);
 		init();
 	}
 
@@ -66,8 +63,8 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 		init();
 	}
 
-	public AdvancedTokenField(Collection<Token> tokens, boolean inputFieldVisible) {
-		this.tokensOfField = tokens;
+	public AdvancedTokenField(List<Token> tokens, boolean inputFieldVisible) {
+		this.tokensOfField.addAll(tokens);
 		inputField.setVisible(inputFieldVisible);
 		init();
 	}
@@ -76,29 +73,21 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 		init();
 	}
 
-	public void setTokenFieldLayout(TokenFieldLayout layout) {
-		switch (layout) {
-		case Vertical:
-
-			break;
-
-		case Horizontal:
-
-			break;
-		}
-	}
-
 	private void init() {
-		this.addStyleName(BASE_STYLE);
+		addStyleName(BASE_STYLE);
 		addComponent(inputField);
-		this.setDragMode(LayoutDragMode.CLONE);
+		setDragMode(LayoutDragMode.CLONE);
 
 		// Enable dropping
-		this.setDropHandler(new DefaultCssLayoutDropHandler());
+		setDropHandler(new DefaultCssLayoutDropHandler());
 
-		// Only allow draggin tokens
-		this.setDragFilter(component -> {
-			return component instanceof TokenLayout;
+		// Only allow draggin buttons
+		setDragFilter(new DragFilter() {
+			private static final long serialVersionUID = 5221913366037820701L;
+
+			public boolean isDraggable(Component component) {
+				return component instanceof TokenLayout;
+			}
 		});
 
 		inputField.setItems(tokensOfField);
@@ -123,48 +112,54 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 			}
 		});
 
-		tokenAddInterceptor = token -> {
-			return token;
+		tokenAddInterceptor = new TokenAddInterceptor() {
+
+			@Override
+			public Token action(Token token) {
+				return token;
+			}
 		};
 
-		tokenRemoveInterceptor = token -> {
-			return token;
+		tokenRemoveInterceptor = new TokenRemoveInterceptor() {
+
+			@Override
+			public Token action(Token event) {
+				return event;
+			}
 		};
 
-		tokenNewItemInterceptor = token -> {
-			return token;
-		};
-	}
+		tokenNewItemInterceptor = new TokenNewItemInterceptor() {
 
-	public DDCssLayout getLayout() {
-		return this;
+			@Override
+			public Token action(Token token) {
+				return token;
+			}
+		};
 	}
 
 	public void setAllowNewItems(boolean allow) {
 		if (allow) {
 			inputField.setNewItemHandler(e -> {
-				Token token = Token.builder().value(e).build();
+				Token token = new Token(e);
 				addToken(tokenAddInterceptor.action(tokenNewItemInterceptor.action(token)));
+				inputField.clear();
 				if (tokenNewItemListener != null)
 					tokenNewItemListener.action(token);
-				inputField.clear();
 			});
 		} else {
 			inputField.setNewItemHandler(null);
 		}
 	}
 
-	public AdvancedTokenField withAllowDuplicatedTokens(boolean allow) {
-		ALLOW_DUPLICATED_TOKEN_VALUES = allow;
-		return this;
-	}
-
-	public boolean isAllowDuplicatedTokens() {
-		return ALLOW_DUPLICATED_TOKEN_VALUES;
+	@Override
+	public Registration addComponentAttachListener(ComponentAttachListener listener) {
+		System.out.println("add detecting class attach");
+		return super.addComponentAttachListener(listener);
 	}
 
 	@Override
 	public void removeComponent(Component c) {
+		System.out.println("remove detecting class: " + c.getClass());
 		if (c instanceof TokenLayout) {
 			// detect the drag and drop from layout
 			removeToken(((TokenLayout) c).getToken());
@@ -175,9 +170,10 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 
 	@Override
 	public void addComponentAsFirst(Component c) {
+		System.out.println("add detecting class: " + c.getClass());
 		if (c instanceof TokenLayout) {
 			// detect the drag and drop from layout
-			addToken(((TokenLayout) c).getToken(), this.getComponentCount());
+			addToken(((TokenLayout) c).getToken(), getComponentCount());
 			return;
 		}
 
@@ -186,6 +182,7 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 
 	@Override
 	public void addComponent(Component c) {
+		System.out.println("add detecting class: " + c.getClass());
 		if (c instanceof TokenLayout) {
 			// detect the drag and drop from layout
 			addToken(((TokenLayout) c).getToken(), -1);
@@ -197,13 +194,14 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 
 	@Override
 	public void addComponent(Component c, int index) {
+		System.out.println("add detecting class: " + c.getClass() + " at index: " + index);
 		if (c instanceof TokenLayout) {
 			// detect the drag and drop from layout
 			addToken(((TokenLayout) c).getToken(), index);
 			return;
 		}
 
-		this.addComponent(c, index);
+		super.addComponent(c, index);
 	}
 
 	public void removeToken(Token token) {
@@ -216,7 +214,7 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 
 		// search in layout and remove if found
 		TokenLayout tl = null;
-		for (Iterator<Component> iterator = this.iterator(); iterator.hasNext();) {
+		for (Iterator<Component> iterator = iterator(); iterator.hasNext();) {
 			Component component = (Component) iterator.next();
 			if (component instanceof TokenLayout) {
 				if (((TokenLayout) component).getToken().equals(token)) {
@@ -254,7 +252,7 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 		if (idx > -1) {
 			super.addComponent(tokenLayout, idx);
 		} else {
-			super.addComponent(tokenLayout, this.getComponentCount() - 1);
+			super.addComponent(tokenLayout, getComponentCount() - 1);
 
 		}
 
@@ -278,21 +276,15 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 		this.inputField = inputField;
 	}
 
-	/**
-	 * Replaced by getValue()
-	 * 
-	 * @return
-	 */
-	@Deprecated
-	public Collection<Token> getTokensOfInputField() {
+	public List<Token> getTokensOfInputField() {
 		return tokensOfField;
 	}
 
 	public List<Token> getTokens() {
 		List<Token> list = new ArrayList<Token>();
-		for (int i = 0; i < this.getComponentCount(); i++) {
-			if (this.getComponent(i) instanceof CssLayout) {
-				CssLayout c = (CssLayout) this.getComponent(i);
+		for (int i = 0; i < getComponentCount(); i++) {
+			if (getComponent(i) instanceof CssLayout) {
+				CssLayout c = (CssLayout) getComponent(i);
 				Token t = (Token) c.getData();
 				list.add(t);
 			}
@@ -308,14 +300,15 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 		if (!tokensOfField.contains(token)) {
 			tokensOfField.add(token);
 		}
+		inputField.clear();
 	}
 
 	public void clearTokens() {
 		List<Component> componentsToRemove = new ArrayList<Component>();
 
-		IntStream.range(0, this.getComponentCount()).forEach(e -> {
-			if (this.getComponent(e) instanceof CssLayout) {
-				componentsToRemove.add(this.getComponent(e));
+		IntStream.range(0, getComponentCount()).forEach(e -> {
+			if (getComponent(e) instanceof CssLayout) {
+				componentsToRemove.add(getComponent(e));
 			}
 		});
 
@@ -326,10 +319,6 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 
 	public void clearAll() {
 		clearTokens();
-		tokensOfField.clear();
-	}
-
-	public void clearTokenList() {
 		tokensOfField.clear();
 	}
 
@@ -367,42 +356,6 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 
 	public void addTokenAddNewItemInterceptor(TokenNewItemInterceptor interceptor) {
 		this.tokenNewItemInterceptor = interceptor;
-	}
-
-	@Override
-	public void setValue(Collection<Token> value) {
-		tokensOfField = value;
-	}
-
-	@Override
-	public Collection<Token> getValue() {
-		return tokensOfField;
-	}
-
-	@Override
-	public Registration addValueChangeListener(ValueChangeListener<Collection<Token>> listener) {
-		return inputField.addListener(ValueChangeEvent.class, listener,
-				ReflectTools.getMethod(ValueChangeListener.class));
-	}
-
-	@Override
-	public void setRequiredIndicatorVisible(boolean requiredIndicatorVisible) {
-		inputField.setRequiredIndicatorVisible(requiredIndicatorVisible);
-	}
-
-	@Override
-	public boolean isRequiredIndicatorVisible() {
-		return inputField.isRequiredIndicatorVisible();
-	}
-
-	@Override
-	public void setReadOnly(boolean readOnly) {
-		inputField.setReadOnly(readOnly);
-	}
-
-	@Override
-	public boolean isReadOnly() {
-		return inputField.isReadOnly();
 	}
 
 }

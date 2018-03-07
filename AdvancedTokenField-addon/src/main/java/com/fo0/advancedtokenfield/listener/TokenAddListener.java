@@ -1,6 +1,6 @@
 package com.fo0.advancedtokenfield.listener;
 
-import com.fo0.advancedtokenfield.model.Token;
+import com.fo0.advancedtokenfield.main.Token;
 
 public interface TokenAddListener {
 
