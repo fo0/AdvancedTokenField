@@ -16,20 +16,17 @@ import com.fo0.advancedtokenfield.listener.TokenNewItemListener;
 import com.fo0.advancedtokenfield.listener.TokenRemoveListener;
 import com.fo0.advancedtokenfield.model.Token;
 import com.fo0.advancedtokenfield.model.TokenLayout;
-import com.vaadin.data.HasValue;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
-import com.vaadin.shared.Registration;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.util.ReflectTools;
 
 import fi.jasoft.dragdroplayouts.DDCssLayout;
 import fi.jasoft.dragdroplayouts.client.ui.LayoutDragMode;
 import fi.jasoft.dragdroplayouts.drophandlers.DefaultCssLayoutDropHandler;
 
-public class AdvancedTokenField extends DDCssLayout implements HasValue<Collection<Token>> {
+public class AdvancedTokenField extends DDCssLayout {
 
 	private static final long serialVersionUID = -8339803297037565191L;
 
@@ -258,8 +255,10 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 
 		}
 
-		if (tokenAddListener != null)
+		if (tokenAddListener != null) {
 			tokenAddListener.action(tokenData);
+		}
+		System.out.println("added token");
 	}
 
 	public void addToken(Token token) {
@@ -367,42 +366,6 @@ public class AdvancedTokenField extends DDCssLayout implements HasValue<Collecti
 
 	public void addTokenAddNewItemInterceptor(TokenNewItemInterceptor interceptor) {
 		this.tokenNewItemInterceptor = interceptor;
-	}
-
-	@Override
-	public void setValue(Collection<Token> value) {
-		tokensOfField = value;
-	}
-
-	@Override
-	public Collection<Token> getValue() {
-		return tokensOfField;
-	}
-
-	@Override
-	public Registration addValueChangeListener(ValueChangeListener<Collection<Token>> listener) {
-		return inputField.addListener(ValueChangeEvent.class, listener,
-				ReflectTools.getMethod(ValueChangeListener.class));
-	}
-
-	@Override
-	public void setRequiredIndicatorVisible(boolean requiredIndicatorVisible) {
-		inputField.setRequiredIndicatorVisible(requiredIndicatorVisible);
-	}
-
-	@Override
-	public boolean isRequiredIndicatorVisible() {
-		return inputField.isRequiredIndicatorVisible();
-	}
-
-	@Override
-	public void setReadOnly(boolean readOnly) {
-		inputField.setReadOnly(readOnly);
-	}
-
-	@Override
-	public boolean isReadOnly() {
-		return inputField.isReadOnly();
 	}
 
 }

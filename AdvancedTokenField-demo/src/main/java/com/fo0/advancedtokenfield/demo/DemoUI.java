@@ -14,7 +14,6 @@ import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.data.Binder;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.communication.PushMode;
@@ -38,40 +37,38 @@ public class DemoUI extends UI {
 	private VerticalLayout root;
 	private AdvancedTokenField tokenField;
 	private AdvancedTokenField dragField;
-	private AdvancedTokenField binderField;
 	private VerticalLayout debugLayout;
-	private Binder<BeanToken> binder = null;
 
 	@Override
 	protected void init(VaadinRequest request) {
 		dragField = createDragTokenField();
-		tokenField = createMainTokenField();
-		binderField = createTokenFieldWithBinder();
+		// tokenField = createMainTokenField();
 
-		root = new VerticalLayout();
+		root = new VerticalLayout(new Label("aslödkasd"));
 
 		root.addComponent(dragField);
-		root.addComponent(tokenField);
-		root.addComponent(binderField);
+		// root.addComponent(tokenField);
+
+		// root.addComponent(new Label("ee"));
 
 		setContent(root);
 
 		debugLayout = new VerticalLayout();
 		root.addComponent(debugLayout);
-		addDebugLog();
+		// addDebugLog();
 	}
 
 	public AdvancedTokenField createDragTokenField() {
 		AdvancedTokenField ft = new AdvancedTokenField(
-				Stream.of(Token.builder().value("DragMe").build()).collect(Collectors.toList()), false);
-		ft.addToken(Token.builder().value("DragMe").build());
+				Stream.of(Token.builder().value("DragMe").build()).collect(Collectors.toList()), true);
+//		ft.addToken(Token.builder().value("DragMe").build());
 
 		// clearing visible token in layout
-		ft.clearTokens();
+		// ft.clearTokens();
 		// clearing tokens in combobox
-		ft.clearTokenList();
+		// ft.clearTokenList();
 
-		ft.addToken(Token.builder().value("DragMe").build());
+		// ft.addToken(Token.builder().value("DragMe").build());
 		return ft;
 	}
 
@@ -116,7 +113,6 @@ public class DemoUI extends UI {
 		});
 
 		tokenField.addTokenAddListener(add -> {
-			binder.getBean().getTokens().add(Token.builder().value(add.getValue()).build());
 			addDebugLog();
 		});
 
@@ -124,20 +120,6 @@ public class DemoUI extends UI {
 			addDebugLog();
 		});
 		return tokenField;
-	}
-
-	public AdvancedTokenField createTokenFieldWithBinder() {
-		AdvancedTokenField withBinder = new AdvancedTokenField(true);
-		withBinder.setAllowNewItems(true);
-		withBinder.getLayout().setCaption("With Binder");
-		binder = new Binder<BeanToken>(BeanToken.class);
-		binder.setReadOnly(true);
-		binder.setBean(BeanToken.builder().build().random());
-		binder.addValueChangeListener(e -> {
-			System.out.println("value changed: " + e);
-		});
-		binder.forField(withBinder).bind(BeanToken::getTokens, BeanToken::setTokens);
-		return withBinder;
 	}
 
 	public void addDebugLog() {
