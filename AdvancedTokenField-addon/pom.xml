@@ -5,7 +5,7 @@
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField</artifactId>
 	<packaging>bundle</packaging>
-	<version>0.1.6-SNAPSHOT</version>
+	<version>0.1.71</version>
 	<name>AdvancedTokenField Add-on</name>
 
 	<prerequisites>
@@ -21,8 +21,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<vaadin.version>8.2.1</vaadin.version>
-		<vaadin.plugin.version>8.2.1</vaadin.plugin.version>
+		<vaadin.version>8.3.2</vaadin.version>
+		<vaadin.plugin.version>8.3.2</vaadin.plugin.version>
 		<!-- ZIP Manifest fields -->
 		<Implementation-Version>${project.version}</Implementation-Version>
 		<!-- Must not change this because of the Directory -->
@@ -99,6 +99,24 @@
 			<artifactId>vaadin-compatibility-shared</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>eu.maxschuster</groupId>
+			<artifactId>vaadin-autocompletetextfield</artifactId>
+			<version>[3.0-alpha-2, )</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.vaadin.alump</groupId>
+			<artifactId>searchdropdown</artifactId>
+			<version>0.3.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.7</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

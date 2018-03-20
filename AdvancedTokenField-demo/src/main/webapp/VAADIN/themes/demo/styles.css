@@ -15053,6 +15053,186 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: hidden;
 }
 
+.demo .search-dropdown {
+	position: relative;
+	padding: $searchdropdown-padding;
+	padding-top: 4px;
+	padding-right: 9px;
+	padding-bottom: 4px;
+	padding-left: 37px;
+	border-radius: 4px;
+	background: white;
+	border: 1px solid #c5c5c5;
+	box-shadow: inset 0 1px 0 #f7f7f7, 0 1px 0 rgba(255, 255, 255, 0.1);
+	transition: box-shadow 180ms, border 180ms;
+	width: 185px;
+	height: 37px;
+}
+
+.demo .search-dropdown.on-focus {
+	border-color: #197de1;
+	box-shadow: 0 0 0 2px rgba(25, 125, 255, 0.5);
+}
+
+.demo .search-dropdown .search-dropdown-field {
+	border: 0;
+	outline: 0;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	font: inherit;
+	font-weight: 400;
+	line-height: normal;
+	background: white;
+	color: #474747;
+}
+
+.demo .search-dropdown .search-dropdown-icon {
+	position: absolute;
+	top: 2px;
+	left: 4px;
+	right: auto;
+	width: 28px;
+	height: 28px;
+}
+
+.demo .search-dropdown .search-dropdown-icon:after {
+	position: absolute;
+	line-height: 28px;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	text-align: center;
+	display: block;
+	font-family: "Vaadin-Icons";
+	content: "\E805";
+	color: black;
+}
+
+.demo .search-dropdown.loading-suggestions .search-dropdown-icon {
+	animation: v-rotate-360 2s linear infinite;
+	transform-origin: 50% 50%;
+}
+
+.demo .search-dropdown.loading-suggestions .search-dropdown-icon:before {
+	position: absolute;
+	line-height: 28px;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	text-align: center;
+	display: block;
+	display: block;
+	font-family: "Vaadin-Icons";
+	color: #197de1;
+	content: "\e75c";
+}
+
+.demo .search-dropdown.loading-suggestions .search-dropdown-icon:after {
+	color: #CCC;
+	content: "\e6d2";
+}
+
+.demo .search-dropdown .search-dropdown-clear {
+	display: none;
+}
+
+.demo .search-dropdown.with-clear {
+	padding-left: 37px;
+	padding-right: 37px;
+}
+
+.demo .search-dropdown.with-clear .search-dropdown-clear {
+	display: block;
+	position: absolute;
+	top: 2px;
+	left: auto;
+	right: 0px;
+	height: 28px;
+	width: 28px;
+	line-height: 28px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.demo .search-dropdown.with-clear .search-dropdown-clear:before {
+	display: block;
+	font-family: "Vaadin-Icons";
+	content: "\e911";
+	color: black;
+}
+
+.demo .search-dropdown-popup {
+	box-sizing: border-box;
+	border-radius: 4px;
+	background-color: white;
+	color: #474747;
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 3px 5px 0 rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.09);
+	backface-visibility: hidden;
+	padding: 4px 4px;
+}
+
+.demo .search-dropdown-popup .search-dropdown-menu {
+	box-sizing: border-box;
+	position: relative;
+	z-index: 1;
+	display: block;
+}
+
+.demo .search-dropdown-popup .search-dropdown-menu TABLE, .demo .search-dropdown-popup .search-dropdown-menu TBODY, .demo .search-dropdown-popup .search-dropdown-menu TR, .demo .search-dropdown-popup .search-dropdown-menu TD {
+	display: block;
+	width: 100%;
+	overflow-y: hidden;
+	float: left;
+	clear: both;
+}
+
+.demo .search-dropdown-popup .search-dropdown-menu .gwt-MenuItem {
+	width: 100%;
+	cursor: pointer;
+	line-height: 27px;
+	padding: 0 20px 0 10px;
+	border-radius: 3px;
+	font-weight: 400;
+	white-space: nowrap;
+	position: relative;
+	height: 27px;
+	box-sizing: border-box;
+	text-overflow: ellipsis;
+	overflow-x: hidden;
+}
+
+.demo .search-dropdown-popup .search-dropdown-menu .gwt-MenuItem .v-icon {
+	margin-right: 5px;
+}
+
+.demo .search-dropdown-popup .search-dropdown-menu .gwt-MenuItem-selected {
+	background-color: #197de1;
+	color: #ecf2f8;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.demo .search-dropdown-popup .search-dropdown-menu .highlight {
+	font-weight: 800;
+	color: blue;
+	text-decoration: underline;
+	text-shadow: white 1px 1px 1px;
+	margin: 0;
+}
+
+.demo .search-dropdown-popup .search-dropdown-menu .gwt-MenuItem-selected .highlight {
+	color: #eef3f9;
+	text-shadow: #ecf2f8;
+}
+
+.demo .search-dropdown-popup .show-more-results {
+	margin-top: 10px;
+	box-sizing: border-box;
+	width: 100%;
+}
+
 .demo .green {
 	background: #4CAF50 !important;
 }

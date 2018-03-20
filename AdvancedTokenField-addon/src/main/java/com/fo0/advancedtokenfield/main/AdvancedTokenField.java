@@ -5,20 +5,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.StringUtils;
+import org.vaadin.alump.searchdropdown.SearchDropDown;
+
 import com.fo0.advancedtokenfield.interceptor.TokenAddInterceptor;
 import com.fo0.advancedtokenfield.interceptor.TokenNewItemInterceptor;
 import com.fo0.advancedtokenfield.interceptor.TokenRemoveInterceptor;
 import com.fo0.advancedtokenfield.listener.OnEnterListener;
 import com.fo0.advancedtokenfield.listener.TokenAddListener;
-import com.fo0.advancedtokenfield.listener.TokenNewItemListener;
 import com.fo0.advancedtokenfield.listener.TokenRemoveListener;
+import com.fo0.advancedtokenfield.model.Token;
 import com.fo0.advancedtokenfield.model.TokenLayout;
-import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.event.ShortcutListener;
+import com.fo0.advancedtokenfield.model.TokenSuggestionProvider;
 import com.vaadin.shared.Registration;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 import fi.jasoft.dragdroplayouts.DDCssLayout;
 import fi.jasoft.dragdroplayouts.client.ui.LayoutDragMode;
@@ -27,12 +29,11 @@ import fi.jasoft.dragdroplayouts.interfaces.DragFilter;
 
 public class AdvancedTokenField extends DDCssLayout {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8139678186130686248L;
 
-	private ComboBox<Token> inputField = new ComboBox<Token>();
+	private SearchDropDown<Token> inputField = null;
+	private TokenSuggestionProvider suggestionProvider;
+
 	private List<Token> tokensOfField = new ArrayList<Token>();
 
 	/**
@@ -47,9 +48,12 @@ public class AdvancedTokenField extends DDCssLayout {
 	 */
 	private TokenRemoveListener tokenRemoveListener;
 	private TokenAddListener tokenAddListener;
-	private TokenNewItemListener tokenNewItemListener;
 
 	private OnEnterListener enterListener;
+
+	private boolean allowNewTokens = false;
+	private boolean allowEmptyValues = false;
+	private int querySuggestionInputMinLength = 2;
 
 	private static final String BASE_STYLE = "advancedtokenfield-layouttokens";
 
@@ -75,6 +79,33 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	private void init() {
 		addStyleName(BASE_STYLE);
+
+		suggestionProvider = new TokenSuggestionProvider(tokensOfField, querySuggestionInputMinLength);
+		inputField = new SearchDropDown<Token>(suggestionProvider);
+		inputField.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+		inputField.addSearchListener(search -> {
+			String input = search.getSource().getValue().trim();
+			if (StringUtils.isEmpty(input)) {
+				return;
+			}
+
+			if (!allowNewTokens) {
+				Token token = tokensOfField.stream().filter(e -> e.getValue().equals(input)).findFirst().orElse(null);
+
+				if (token != null)
+					addToken(token);
+			} else {
+				Token token = tokensOfField.stream().filter(e -> e.getValue().equals(input)).findFirst().orElse(null);
+
+				if (token != null) {
+					addToken(token);
+				} else {
+					token = tokenNewItemInterceptor.action(new Token(input));
+					addToken(token);
+				}
+			}
+		});
+
 		addComponent(inputField);
 		setDragMode(LayoutDragMode.CLONE);
 
@@ -87,28 +118,6 @@ public class AdvancedTokenField extends DDCssLayout {
 
 			public boolean isDraggable(Component component) {
 				return component instanceof TokenLayout;
-			}
-		});
-
-		inputField.setItems(tokensOfField);
-		inputField.setEmptySelectionAllowed(true);
-		inputField.setItemCaptionGenerator(e -> e.getValue());
-
-		inputField.addShortcutListener(new ShortcutListener("Enter", KeyCode.ENTER, null) {
-
-			private static final long serialVersionUID = -3010772759203328514L;
-
-			@Override
-			public void handleAction(Object sender, Object target) {
-				Token tokenValue = inputField.getValue();
-
-				if (tokenValue != null && !tokenValue.getValue().isEmpty()) {
-					addToken(tokenValue);
-				}
-
-				if (enterListener != null) {
-					enterListener.action(tokenValue);
-				}
 			}
 		});
 
@@ -137,18 +146,17 @@ public class AdvancedTokenField extends DDCssLayout {
 		};
 	}
 
+	public void setQuerySuggestionInputMinLength(int minLength) {
+		this.querySuggestionInputMinLength = minLength;
+		suggestionProvider.setQuerySuggestionInputMinLength(querySuggestionInputMinLength);
+	}
+
 	public void setAllowNewItems(boolean allow) {
-		if (allow) {
-			inputField.setNewItemHandler(e -> {
-				Token token = new Token(e);
-				addToken(tokenAddInterceptor.action(tokenNewItemInterceptor.action(token)));
-				inputField.clear();
-				if (tokenNewItemListener != null)
-					tokenNewItemListener.action(token);
-			});
-		} else {
-			inputField.setNewItemHandler(null);
-		}
+		this.allowNewTokens = allow;
+	}
+
+	public void setAllowEmptyValues(boolean allow) {
+		this.allowNewTokens = allow;
 	}
 
 	@Override
@@ -182,7 +190,6 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	@Override
 	public void addComponent(Component c) {
-		System.out.println("add detecting class: " + c.getClass());
 		if (c instanceof TokenLayout) {
 			// detect the drag and drop from layout
 			addToken(((TokenLayout) c).getToken(), -1);
@@ -194,7 +201,6 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	@Override
 	public void addComponent(Component c, int index) {
-		System.out.println("add detecting class: " + c.getClass() + " at index: " + index);
 		if (c instanceof TokenLayout) {
 			// detect the drag and drop from layout
 			addToken(((TokenLayout) c).getToken(), index);
@@ -258,6 +264,8 @@ public class AdvancedTokenField extends DDCssLayout {
 
 		if (tokenAddListener != null)
 			tokenAddListener.action(tokenData);
+
+		inputField.clear();
 	}
 
 	public void addToken(Token token) {
@@ -268,11 +276,11 @@ public class AdvancedTokenField extends DDCssLayout {
 		token.stream().forEach(e -> addToken(e));
 	}
 
-	public ComboBox<Token> getInputField() {
+	public SearchDropDown<Token> getInputField() {
 		return inputField;
 	}
-
-	public void setInputField(ComboBox<Token> inputField) {
+	
+	public void setInputField(SearchDropDown<Token> inputField) {
 		this.inputField = inputField;
 	}
 
@@ -300,7 +308,6 @@ public class AdvancedTokenField extends DDCssLayout {
 		if (!tokensOfField.contains(token)) {
 			tokensOfField.add(token);
 		}
-		inputField.clear();
 	}
 
 	public void clearTokens() {
@@ -332,10 +339,6 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	public void addTokenAddListener(TokenAddListener listener) {
 		this.tokenAddListener = listener;
-	}
-
-	public void addTokenAddNewItemListener(TokenNewItemListener listener) {
-		this.tokenNewItemListener = listener;
 	}
 
 	public void addOnEnterListener(OnEnterListener listener) {

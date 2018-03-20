@@ -1,4 +1,4 @@
-package com.fo0.advancedtokenfield.main;
+package com.fo0.advancedtokenfield.model;
 
 import java.io.Serializable;
 

@@ -9,7 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import com.fo0.advancedtokenfield.interceptor.TokenNewItemInterceptor;
 import com.fo0.advancedtokenfield.interceptor.TokenRemoveInterceptor;
 import com.fo0.advancedtokenfield.main.AdvancedTokenField;
-import com.fo0.advancedtokenfield.main.Token;
+import com.fo0.advancedtokenfield.model.Token;
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -41,13 +41,11 @@ public class DemoUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 		tokenField = new AdvancedTokenField();
+		tokenField.setQuerySuggestionInputMinLength(0);
 		// allow new items to be added to layout-tokens and combobox
 		tokenField.setAllowNewItems(true);
 
 		root = new VerticalLayout();
-		AdvancedTokenField ft = new AdvancedTokenField(Stream.of(new Token("DragMe")).collect(Collectors.toList()));
-		ft.addToken(new Token("DragMe"));
-		root.addComponent(ft);
 		root.addComponent(tokenField);
 		setContent(root);
 
@@ -86,10 +84,6 @@ public class DemoUI extends UI {
 
 		debugLayout = new VerticalLayout();
 		root.addComponent(debugLayout);
-
-		tokenField.addTokenAddNewItemListener(add -> {
-			addDebugLog();
-		});
 
 		tokenField.addTokenAddListener(add -> {
 			addDebugLog();

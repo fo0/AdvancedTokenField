@@ -1,7 +1,9 @@
 @import "../valo/valo.scss";
+@import "../../../../resources/VAADIN/addons/searchdropdown/searchdropdown.scss";
 
 .demo {
 	@include valo;
+	@include searchdropdown;
 	
 	.green {
 		background: #4CAF50 !important;	
