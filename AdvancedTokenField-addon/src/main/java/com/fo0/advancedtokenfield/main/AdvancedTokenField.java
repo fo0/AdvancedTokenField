@@ -63,14 +63,14 @@ public class AdvancedTokenField extends DDCssLayout {
 	}
 
 	public AdvancedTokenField(boolean inputFieldVisible) {
-		inputField.setVisible(inputFieldVisible);
 		init();
+		inputField.setVisible(inputFieldVisible);
 	}
 
 	public AdvancedTokenField(List<Token> tokens, boolean inputFieldVisible) {
 		this.tokensOfField.addAll(tokens);
-		inputField.setVisible(inputFieldVisible);
 		init();
+		inputField.setVisible(inputFieldVisible);
 	}
 
 	public AdvancedTokenField() {
