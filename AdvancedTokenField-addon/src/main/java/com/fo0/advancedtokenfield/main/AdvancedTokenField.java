@@ -3,7 +3,9 @@ package com.fo0.advancedtokenfield.main;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.vaadin.alump.searchdropdown.SearchDropDown;
@@ -35,6 +37,7 @@ public class AdvancedTokenField extends DDCssLayout {
 	private TokenSuggestionProvider suggestionProvider;
 
 	private List<Token> tokensOfField = new ArrayList<Token>();
+	private List<Token> initTokensOfField = new ArrayList<Token>();
 
 	/**
 	 * Interceptors
@@ -53,22 +56,22 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	private boolean allowNewTokens = false;
 	private boolean allowEmptyValues = false;
+	private boolean removeInitTokens = false;
 	private int querySuggestionInputMinLength = 2;
 
 	private static final String BASE_STYLE = "advancedtokenfield-layouttokens";
 
 	public AdvancedTokenField(List<Token> tokens) {
-		this.tokensOfField.addAll(tokens);
-		init();
+		this(tokens, true);
 	}
 
 	public AdvancedTokenField(boolean inputFieldVisible) {
-		init();
-		inputField.setVisible(inputFieldVisible);
+		this(null, inputFieldVisible);
 	}
 
 	public AdvancedTokenField(List<Token> tokens, boolean inputFieldVisible) {
-		this.tokensOfField.addAll(tokens);
+		if (tokens != null && !tokens.isEmpty())
+			this.tokensOfField.addAll(tokens);
 		init();
 		inputField.setVisible(inputFieldVisible);
 	}
@@ -144,6 +147,17 @@ public class AdvancedTokenField extends DDCssLayout {
 				return token;
 			}
 		};
+
+		copyInputfieldTokensToInitTokens();
+	}
+
+	protected void copyInputfieldTokensToInitTokens() {
+		initTokensOfField.clear();
+		initTokensOfField.addAll(tokensOfField);
+	}
+
+	public void setRemoveInitTokens(boolean remove) {
+		this.removeInitTokens = remove;
 	}
 
 	public void setQuerySuggestionInputMinLength(int minLength) {
@@ -238,7 +252,13 @@ public class AdvancedTokenField extends DDCssLayout {
 			tokenRemoveListener.action(tl);
 		}
 
-		tokensOfField.remove(tokenData);
+		if (removeInitTokens || !initTokensOfField.contains(tokenData)) {
+			System.out.println("remove init tokens: " + removeInitTokens);
+			System.out.println("in  init token: "
+					+ initTokensOfField.stream().anyMatch(e -> e.getValue().equals(tokenData.getValue())));
+			System.out.println("removing token: " + tokenData);
+			tokensOfField.remove(tokenData);
+		}
 	}
 
 	public void addToken(Token token, int idx) {
@@ -279,10 +299,6 @@ public class AdvancedTokenField extends DDCssLayout {
 	public SearchDropDown<Token> getInputField() {
 		return inputField;
 	}
-	
-	public void setInputField(SearchDropDown<Token> inputField) {
-		this.inputField = inputField;
-	}
 
 	public List<Token> getTokensOfInputField() {
 		return tokensOfField;
@@ -301,13 +317,25 @@ public class AdvancedTokenField extends DDCssLayout {
 	}
 
 	public void addTokensToInputField(List<Token> tokens) {
-		tokens.stream().forEach(e -> addTokenToInputField(e));
+		if (tokens == null || tokens.isEmpty())
+			return;
+
+		addTokensToInputField(tokens.stream().toArray(Token[]::new));
+	}
+
+	public void addTokensToInputField(Token... tokens) {
+		List<Token> list = Stream.of(tokens).distinct().filter(e -> !tokensOfField.contains(e))
+				.collect(Collectors.toList());
+		if (list == null || list.isEmpty())
+			return;
+
+		tokensOfField.addAll(list);
+		
+		copyInputfieldTokensToInitTokens();
 	}
 
 	public void addTokenToInputField(Token token) {
-		if (!tokensOfField.contains(token)) {
-			tokensOfField.add(token);
-		}
+		addTokensToInputField(token);
 	}
 
 	public void clearTokens() {
