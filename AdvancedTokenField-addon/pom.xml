@@ -6,7 +6,7 @@
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField</artifactId>
 	<packaging>bundle</packaging>
-	<version>0.1.91-SNAPSHOT</version>
+	<version>0.1.91</version>
 	<name>AdvancedTokenField Add-on</name>
 
 	<prerequisites>
