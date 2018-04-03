@@ -57,6 +57,7 @@ public class AdvancedTokenField extends DDCssLayout {
 	private boolean allowNewTokens = false;
 	private boolean allowEmptyValues = false;
 	private boolean removeInitTokens = false;
+	private boolean tokenCloseButton = true;
 	private int querySuggestionInputMinLength = 2;
 
 	private static final String BASE_STYLE = "advancedtokenfield-layouttokens";
@@ -173,6 +174,14 @@ public class AdvancedTokenField extends DDCssLayout {
 		this.allowNewTokens = allow;
 	}
 
+	public void setTokenCloseButton(boolean tokenCloseButton) {
+		this.tokenCloseButton = tokenCloseButton;
+	}
+
+	public boolean getTokenCloseButton() {
+		return tokenCloseButton;
+	}
+
 	@Override
 	public Registration addComponentAttachListener(ComponentAttachListener listener) {
 		System.out.println("add detecting class attach");
@@ -268,10 +277,12 @@ public class AdvancedTokenField extends DDCssLayout {
 			return;
 		}
 
-		TokenLayout tokenLayout = new TokenLayout(tokenData);
-		tokenLayout.getBtn().addClickListener(e -> {
-			removeToken(tokenLayout.getToken());
-		});
+		TokenLayout tokenLayout = new TokenLayout(tokenData, tokenCloseButton);
+
+		if (tokenCloseButton)
+			tokenLayout.getBtn().addClickListener(e -> {
+				removeToken(tokenLayout.getToken());
+			});
 
 		addTokenToInputField(tokenData);
 
@@ -330,7 +341,7 @@ public class AdvancedTokenField extends DDCssLayout {
 			return;
 
 		tokensOfField.addAll(list);
-		
+
 		copyInputfieldTokensToInitTokens();
 	}
 

@@ -1,8 +1,6 @@
 package com.fo0.advancedtokenfield.demo;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -17,6 +15,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.communication.PushMode;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
@@ -45,7 +44,13 @@ public class DemoUI extends UI {
 		// allow new items to be added to layout-tokens and combobox
 		tokenField.setAllowNewItems(true);
 
-		root = new VerticalLayout();
+		Button btn = new Button("Toggle Token close button");
+		btn.addClickListener(e -> {
+			tokenField.setTokenCloseButton(!tokenField.getTokenCloseButton());
+			Notification.show("Tokens closable: " + tokenField.getTokenCloseButton(), Type.TRAY_NOTIFICATION);
+		});
+
+		root = new VerticalLayout(btn);
 		root.addComponent(tokenField);
 		setContent(root);
 

@@ -12,9 +12,9 @@ public class TokenLayout extends CssLayout {
 
 	private Token token = null;
 	private Label lbl = new Label();
-	private NativeButton btn = new NativeButton();
+	private NativeButton btn = null;
 
-	public TokenLayout(Token token) {
+	public TokenLayout(Token token, boolean tokenCloseButton) {
 		super();
 		this.token = token;
 		if (token != null) {
@@ -24,12 +24,18 @@ public class TokenLayout extends CssLayout {
 		setData(token);
 		addStyleName("flat");
 		addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-		btn.setIcon(VaadinIcons.CLOSE);
 
 		if (token.getStyle() != null && !token.getStyle().isEmpty())
 			addStyleName(token.getStyle());
 
-		addComponents(lbl, btn);
+		if (tokenCloseButton) {
+			btn = new NativeButton();
+			btn.setIcon(VaadinIcons.CLOSE);
+			addComponents(lbl, btn);
+		} else {
+			addComponents(lbl);
+		}
+
 	}
 
 	public Label getLbl() {

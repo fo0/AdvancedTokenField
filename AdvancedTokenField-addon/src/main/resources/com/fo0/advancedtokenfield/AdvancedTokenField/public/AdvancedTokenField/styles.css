@@ -3,7 +3,7 @@
 	background: #1E88E5;
 	color: white;
 	border-radius: 2px;
-	padding: 4px 5px 4px 10px;
+	padding: 4px 10px;
 }
 
 .advancedtokenfield-layouttokens>:nth-last-child(-n+2) {
@@ -19,9 +19,10 @@
 	background: transparent;
 	border: none;
 	color: white;
-	margin-left: 2px;
 	cursor: pointer;
 	transition: background 0.3s, color 0.3s;
+	margin-left: 8px;
+	padding: 0;
 }
 
 .advancedtokenfield-layouttokens .v-component-group .v-nativebutton:hover
