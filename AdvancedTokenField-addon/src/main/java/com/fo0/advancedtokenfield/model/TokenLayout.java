@@ -1,5 +1,6 @@
 package com.fo0.advancedtokenfield.model;
 
+import com.fo0.advancedtokenfield.listener.TokenClickListener;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
@@ -14,7 +15,7 @@ public class TokenLayout extends CssLayout {
 	private Label lbl = new Label();
 	private NativeButton btn = null;
 
-	public TokenLayout(Token token, boolean tokenCloseButton) {
+	public TokenLayout(Token token, TokenClickListener clickListener, boolean tokenCloseButton) {
 		super();
 		this.token = token;
 		if (token != null) {
@@ -36,6 +37,12 @@ public class TokenLayout extends CssLayout {
 			addComponents(lbl);
 		}
 
+		addLayoutClickListener(e -> {
+			if (clickListener == null)
+				return;
+
+			clickListener.action(token);
+		});
 	}
 
 	public Label getLbl() {

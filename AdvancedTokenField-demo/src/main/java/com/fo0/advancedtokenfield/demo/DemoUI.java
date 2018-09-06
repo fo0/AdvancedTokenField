@@ -98,6 +98,10 @@ public class DemoUI extends UI {
 			addDebugLog();
 		});
 
+		tokenField.addTokenClickListener(e -> {
+			Notification.show("Clicked on Token: " + e, Type.HUMANIZED_MESSAGE);
+		});
+
 		addDebugLog();
 	}
 

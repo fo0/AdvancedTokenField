@@ -15,6 +15,7 @@ import com.fo0.advancedtokenfield.interceptor.TokenNewItemInterceptor;
 import com.fo0.advancedtokenfield.interceptor.TokenRemoveInterceptor;
 import com.fo0.advancedtokenfield.listener.OnEnterListener;
 import com.fo0.advancedtokenfield.listener.TokenAddListener;
+import com.fo0.advancedtokenfield.listener.TokenClickListener;
 import com.fo0.advancedtokenfield.listener.TokenRemoveListener;
 import com.fo0.advancedtokenfield.model.Token;
 import com.fo0.advancedtokenfield.model.TokenLayout;
@@ -51,6 +52,7 @@ public class AdvancedTokenField extends DDCssLayout {
 	 */
 	private TokenRemoveListener tokenRemoveListener;
 	private TokenAddListener tokenAddListener;
+	private TokenClickListener tokenClickListener;
 
 	private OnEnterListener enterListener;
 
@@ -171,7 +173,7 @@ public class AdvancedTokenField extends DDCssLayout {
 	}
 
 	public void setAllowEmptyValues(boolean allow) {
-		this.allowNewTokens = allow;
+		this.allowEmptyValues = allow;
 	}
 
 	public void setTokenCloseButton(boolean tokenCloseButton) {
@@ -277,7 +279,7 @@ public class AdvancedTokenField extends DDCssLayout {
 			return;
 		}
 
-		TokenLayout tokenLayout = new TokenLayout(tokenData, tokenCloseButton);
+		TokenLayout tokenLayout = new TokenLayout(tokenData, tokenClickListener, tokenCloseButton);
 
 		if (tokenCloseButton)
 			tokenLayout.getBtn().addClickListener(e -> {
@@ -382,6 +384,10 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	public void addOnEnterListener(OnEnterListener listener) {
 		enterListener = listener;
+	}
+
+	public void addTokenClickListener(TokenClickListener listener) {
+		this.tokenClickListener = listener;
 	}
 
 	/**
