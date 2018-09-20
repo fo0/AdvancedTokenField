@@ -20,6 +20,7 @@ import com.fo0.advancedtokenfield.listener.TokenRemoveListener;
 import com.fo0.advancedtokenfield.model.Token;
 import com.fo0.advancedtokenfield.model.TokenLayout;
 import com.fo0.advancedtokenfield.model.TokenSuggestionProvider;
+import com.fo0.advancedtokenfield.utils.CONSTANTS;
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
@@ -186,13 +187,15 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	@Override
 	public Registration addComponentAttachListener(ComponentAttachListener listener) {
-		System.out.println("add detecting class attach");
+		if (CONSTANTS.DEBUG)
+			System.out.println("add detecting class attach");
 		return super.addComponentAttachListener(listener);
 	}
 
 	@Override
 	public void removeComponent(Component c) {
-//		System.out.println("remove detecting class: " + c.getClass());
+		if (CONSTANTS.DEBUG)
+			System.out.println("remove detecting class: " + c.getClass());
 		if (c instanceof TokenLayout) {
 			// detect the drag and drop from layout
 			removeToken(((TokenLayout) c).getToken());
@@ -203,7 +206,8 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	@Override
 	public void addComponentAsFirst(Component c) {
-		System.out.println("add detecting class: " + c.getClass());
+		if (CONSTANTS.DEBUG)
+			System.out.println("add detecting class: " + c.getClass());
 		if (c instanceof TokenLayout) {
 			// detect the drag and drop from layout
 			addToken(((TokenLayout) c).getToken(), getComponentCount());
@@ -264,10 +268,13 @@ public class AdvancedTokenField extends DDCssLayout {
 		}
 
 		if (removeInitTokens || !initTokensOfField.contains(tokenData)) {
-			System.out.println("remove init tokens: " + removeInitTokens);
-			System.out.println("in  init token: "
-					+ initTokensOfField.stream().anyMatch(e -> e.getValue().equals(tokenData.getValue())));
-			System.out.println("removing token: " + tokenData);
+			if (CONSTANTS.DEBUG) {
+				System.out.println("remove init tokens: " + removeInitTokens);
+
+				System.out.println("in  init token: "
+						+ initTokensOfField.stream().anyMatch(e -> e.getValue().equals(tokenData.getValue())));
+				System.out.println("removing token: " + tokenData);
+			}
 			tokensOfField.remove(tokenData);
 		}
 	}
