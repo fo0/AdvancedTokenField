@@ -192,7 +192,7 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	@Override
 	public void removeComponent(Component c) {
-		System.out.println("remove detecting class: " + c.getClass());
+//		System.out.println("remove detecting class: " + c.getClass());
 		if (c instanceof TokenLayout) {
 			// detect the drag and drop from layout
 			removeToken(((TokenLayout) c).getToken());

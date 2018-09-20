@@ -50,6 +50,9 @@ public class DemoUI extends UI {
 			Notification.show("Tokens closable: " + tokenField.getTokenCloseButton(), Type.TRAY_NOTIFICATION);
 		});
 
+		debugLayout = new VerticalLayout();
+		addListeners();
+
 		root = new VerticalLayout(btn);
 		root.addComponent(tokenField);
 		setContent(root);
@@ -68,6 +71,12 @@ public class DemoUI extends UI {
 		tokenField.addToken(new Token("token4", "green"));
 		tokenField.addTokens(Arrays.asList(new Token[] { new Token("Token5"), new Token("Token6") }));
 
+		root.addComponent(debugLayout);
+
+		addDebugLog();
+	}
+
+	public void addListeners() {
 		// to override defaults
 		tokenField.addTokenAddInterceptor(token -> {
 			Notification.show(token.getClass().getSimpleName(), "Adding Token: " + token, Type.HUMANIZED_MESSAGE);
@@ -87,9 +96,6 @@ public class DemoUI extends UI {
 			return removeEvent;
 		});
 
-		debugLayout = new VerticalLayout();
-		root.addComponent(debugLayout);
-
 		tokenField.addTokenAddListener(add -> {
 			addDebugLog();
 		});
@@ -99,10 +105,9 @@ public class DemoUI extends UI {
 		});
 
 		tokenField.addTokenClickListener(e -> {
+			System.out.println("clicked on token click listener");
 			Notification.show("Clicked on Token: " + e, Type.HUMANIZED_MESSAGE);
 		});
-
-		addDebugLog();
 	}
 
 	public void addDebugLog() {

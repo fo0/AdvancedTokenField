@@ -41,6 +41,11 @@ public class TokenLayout extends CssLayout {
 			if (clickListener == null)
 				return;
 
+			if (e.getClickedComponent() != null && e.getClickedComponent() instanceof NativeButton) {
+				// watchdog for skipping close button clicks
+				return;
+			}
+
 			clickListener.action(token);
 		});
 	}
