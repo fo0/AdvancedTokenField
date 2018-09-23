@@ -169,12 +169,20 @@ public class AdvancedTokenField extends DDCssLayout {
 		suggestionProvider.setQuerySuggestionInputMinLength(querySuggestionInputMinLength);
 	}
 
-	public void setAllowNewItems(boolean allow) {
-		this.allowNewTokens = allow;
+	public boolean isAllowNewTokens() {
+		return allowNewTokens;
 	}
 
-	public void setAllowEmptyValues(boolean allow) {
-		this.allowEmptyValues = allow;
+	public void setAllowNewTokens(boolean allowNewTokens) {
+		this.allowNewTokens = allowNewTokens;
+	}
+
+	public boolean isAllowEmptyValues() {
+		return allowEmptyValues;
+	}
+
+	public void setAllowEmptyValues(boolean allowEmptyValues) {
+		this.allowEmptyValues = allowEmptyValues;
 	}
 
 	public void setTokenCloseButton(boolean tokenCloseButton) {
@@ -271,8 +279,7 @@ public class AdvancedTokenField extends DDCssLayout {
 			if (CONSTANTS.DEBUG) {
 				System.out.println("remove init tokens: " + removeInitTokens);
 
-				System.out.println("in  init token: "
-						+ initTokensOfField.stream().anyMatch(e -> e.getValue().equals(tokenData.getValue())));
+				System.out.println("in  init token: " + initTokensOfField.stream().anyMatch(e -> e.equals(tokenData)));
 				System.out.println("removing token: " + tokenData);
 			}
 			tokensOfField.remove(tokenData);
