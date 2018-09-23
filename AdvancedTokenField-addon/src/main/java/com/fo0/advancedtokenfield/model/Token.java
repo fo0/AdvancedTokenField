@@ -6,18 +6,32 @@ public class Token implements Serializable {
 
 	private static final long serialVersionUID = -7438343157114436699L;
 
+	private String id;
 	private String value;
 	private String style;
 
 	public Token(String value) {
 		super();
+		this.id = value;
 		this.value = value;
 	}
 
 	public Token(String value, String style) {
 		super();
+		this.id = value;
 		this.value = value;
 		this.style = style;
+	}
+
+	public Token(String id, String value, String style) {
+		super();
+		this.id = id;
+		this.value = value;
+		this.style = style;
+	}
+
+	public Token(Builder builder) {
+		this(builder.id, builder.value, builder.style);
 	}
 
 	public String getStyle() {
@@ -36,11 +50,19 @@ public class Token implements Serializable {
 		this.value = value;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -50,21 +72,54 @@ public class Token implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Token))
+		if (getClass() != obj.getClass())
 			return false;
 		Token other = (Token) obj;
-		if (value == null) {
-			if (other.value != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!value.equals(other.value))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Token [" + (value != null ? "value=" + value + ", " : "") + (style != null ? "style=" + style : "")
-				+ "]";
+		return "Token [" + (id != null ? "id=" + id + ", " : "") + (value != null ? "value=" + value + ", " : "")
+				+ (style != null ? "style=" + style : "") + "]";
+	}
+
+	public static class Builder {
+		private String id;
+		private String value;
+		private String style;
+
+		public Builder(String value) {
+			if (value == null || value.isEmpty()) {
+				throw new IllegalArgumentException("value cannot be null or empty: " + value);
+			}
+
+			this.value = value;
+		}
+
+		public Builder withId(String id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder withValue(String value) {
+			this.value = value;
+			return this;
+		}
+
+		public Builder withStyle(String style) {
+			this.style = style;
+			return this;
+		}
+
+		public Token build() {
+			return new Token(this);
+		}
 	}
 
 }
