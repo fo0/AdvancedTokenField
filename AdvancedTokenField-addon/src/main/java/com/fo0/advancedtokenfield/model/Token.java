@@ -34,6 +34,10 @@ public class Token implements Serializable {
 		this(builder.id, builder.value, builder.style);
 	}
 
+	public static Builder builder() {
+		return new Builder();
+	}
+
 	public String getStyle() {
 		return style;
 	}
@@ -90,29 +94,26 @@ public class Token implements Serializable {
 	}
 
 	public static class Builder {
+
 		private String id;
 		private String value;
 		private String style;
 
-		public Builder(String value) {
-			if (value == null || value.isEmpty()) {
-				throw new IllegalArgumentException("value cannot be null or empty: " + value);
-			}
+		Builder() {
 
-			this.value = value;
 		}
 
-		public Builder withId(String id) {
+		public Builder id(String id) {
 			this.id = id;
 			return this;
 		}
 
-		public Builder withValue(String value) {
+		public Builder value(String value) {
 			this.value = value;
 			return this;
 		}
 
-		public Builder withStyle(String style) {
+		public Builder style(String style) {
 			this.style = style;
 			return this;
 		}

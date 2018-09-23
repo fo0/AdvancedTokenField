@@ -42,7 +42,7 @@ public class DemoUI extends UI {
 		tokenField = new AdvancedTokenField();
 		tokenField.setQuerySuggestionInputMinLength(0);
 		// allow new items to be added to layout-tokens and combobox
-		tokenField.setAllowNewItems(true);
+		tokenField.setAllowNewTokens(true);
 
 		Button btn = new Button("Toggle Token close button");
 		btn.addClickListener(e -> {
@@ -69,7 +69,8 @@ public class DemoUI extends UI {
 		// adding tokens to layout directly (adding to combobox cache too, if
 		// not existing)
 		tokenField.addToken(new Token("token4", "green"));
-		tokenField.addTokens(Arrays.asList(new Token[] { new Token("Token5"), new Token("Token6") }));
+		tokenField
+				.addTokens(Arrays.asList(new Token[] { Token.builder().value("Token5").build(), new Token("Token6") }));
 
 		root.addComponent(debugLayout);
 
