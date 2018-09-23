@@ -1,5 +1,7 @@
 package com.fo0.advancedtokenfield.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fo0.advancedtokenfield.listener.TokenClickListener;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.CssLayout;
@@ -26,7 +28,7 @@ public class TokenLayout extends CssLayout {
 		addStyleName("flat");
 		addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-		if (token.getStyle() != null && !token.getStyle().isEmpty())
+		if (StringUtils.isNotEmpty(token.getStyle()))
 			addStyleName(token.getStyle());
 
 		if (tokenCloseButton) {
