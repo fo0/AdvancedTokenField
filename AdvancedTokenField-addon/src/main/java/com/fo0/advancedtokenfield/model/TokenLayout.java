@@ -17,11 +17,21 @@ public class TokenLayout extends CssLayout {
 	private Label lbl = new Label();
 	private NativeButton btn = null;
 
-	public TokenLayout(Token token, TokenClickListener clickListener, boolean tokenCloseButton) {
+	public TokenLayout(Token token, String emptyToken, TokenClickListener clickListener, boolean tokenCloseButton) {
 		super();
 		this.token = token;
 		if (token != null) {
-			lbl.setValue(token.getValue());
+			// add token value, fallback can be configured via api
+			if (StringUtils.isNotEmpty(token.getValue())) {
+				lbl.setValue(token.getValue());
+			} else {
+				lbl.setValue(emptyToken);
+			}
+
+			// assign only if there is no empty description
+			if (StringUtils.isNotEmpty(token.getDescription())) {
+				lbl.setDescription(token.getDescription(), token.getDescriptionContentMode());
+			}
 		}
 
 		setData(token);

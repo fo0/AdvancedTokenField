@@ -15,6 +15,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.communication.PushMode;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -69,8 +70,9 @@ public class DemoUI extends UI {
 		// adding tokens to layout directly (adding to combobox cache too, if
 		// not existing)
 		tokenField.addToken(new Token("token4", "green"));
-		tokenField
-				.addTokens(Arrays.asList(new Token[] { Token.builder().value("Token5").build(), new Token("Token6") }));
+		tokenField.addTokens(Arrays.asList(new Token[] {
+				Token.builder().value("Token5").descriptio("Description of Token 5", ContentMode.PREFORMATTED).build(),
+				new Token("Token6") }));
 
 		root.addComponent(debugLayout);
 

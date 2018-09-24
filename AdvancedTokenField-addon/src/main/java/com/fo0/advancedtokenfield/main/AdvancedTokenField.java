@@ -20,7 +20,7 @@ import com.fo0.advancedtokenfield.listener.TokenRemoveListener;
 import com.fo0.advancedtokenfield.model.Token;
 import com.fo0.advancedtokenfield.model.TokenLayout;
 import com.fo0.advancedtokenfield.model.TokenSuggestionProvider;
-import com.fo0.advancedtokenfield.utils.CONSTANTS;
+import com.fo0.advancedtokenfield.utils.TOKENFIELD_CONSTANTS;
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
@@ -63,6 +63,7 @@ public class AdvancedTokenField extends DDCssLayout {
 	private boolean tokenCloseButton = true;
 	private int querySuggestionInputMinLength = 2;
 
+	private String EMPTY_TOKEN = TOKENFIELD_CONSTANTS.EMPTY_TOKEN_VALUE;
 	private static final String BASE_STYLE = "advancedtokenfield-layouttokens";
 
 	public AdvancedTokenField(List<Token> tokens) {
@@ -82,77 +83,6 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	public AdvancedTokenField() {
 		init();
-	}
-
-	private void init() {
-		addStyleName(BASE_STYLE);
-
-		suggestionProvider = new TokenSuggestionProvider(tokensOfField, querySuggestionInputMinLength);
-		inputField = new SearchDropDown<Token>(suggestionProvider);
-		inputField.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
-		inputField.addSearchListener(search -> {
-			String input = search.getSource().getValue().trim();
-			if (StringUtils.isEmpty(input)) {
-				return;
-			}
-
-			if (!allowNewTokens) {
-				Token token = tokensOfField.stream().filter(e -> e.getValue().equals(input)).findFirst().orElse(null);
-
-				if (token != null)
-					addToken(token);
-			} else {
-				Token token = tokensOfField.stream().filter(e -> e.getValue().equals(input)).findFirst().orElse(null);
-
-				if (token != null) {
-					addToken(token);
-				} else {
-					token = tokenNewItemInterceptor.action(new Token(input));
-					addToken(token);
-				}
-			}
-		});
-
-		addComponent(inputField);
-		setDragMode(LayoutDragMode.CLONE);
-
-		// Enable dropping
-		setDropHandler(new DefaultCssLayoutDropHandler());
-
-		// Only allow draggin buttons
-		setDragFilter(new DragFilter() {
-			private static final long serialVersionUID = 5221913366037820701L;
-
-			public boolean isDraggable(Component component) {
-				return component instanceof TokenLayout;
-			}
-		});
-
-		tokenAddInterceptor = new TokenAddInterceptor() {
-
-			@Override
-			public Token action(Token token) {
-				return token;
-			}
-		};
-
-		tokenRemoveInterceptor = new TokenRemoveInterceptor() {
-
-			@Override
-			public Token action(Token event) {
-				return event;
-			}
-		};
-
-		tokenNewItemInterceptor = new TokenNewItemInterceptor() {
-
-			@Override
-			public Token action(Token token) {
-				return token;
-			}
-		};
-
-		copyInputfieldTokensToInitTokens();
 	}
 
 	protected void copyInputfieldTokensToInitTokens() {
@@ -193,129 +123,12 @@ public class AdvancedTokenField extends DDCssLayout {
 		return tokenCloseButton;
 	}
 
-	@Override
-	public Registration addComponentAttachListener(ComponentAttachListener listener) {
-		if (CONSTANTS.DEBUG)
-			System.out.println("add detecting class attach");
-		return super.addComponentAttachListener(listener);
-	}
-
-	@Override
-	public void removeComponent(Component c) {
-		if (CONSTANTS.DEBUG)
-			System.out.println("remove detecting class: " + c.getClass());
-		if (c instanceof TokenLayout) {
-			// detect the drag and drop from layout
-			removeToken(((TokenLayout) c).getToken());
-			return;
-		}
-		super.removeComponent(c);
-	}
-
-	@Override
-	public void addComponentAsFirst(Component c) {
-		if (CONSTANTS.DEBUG)
-			System.out.println("add detecting class: " + c.getClass());
-		if (c instanceof TokenLayout) {
-			// detect the drag and drop from layout
-			addToken(((TokenLayout) c).getToken(), getComponentCount());
-			return;
-		}
-
-		super.addComponent(c);
-	}
-
-	@Override
-	public void addComponent(Component c) {
-		if (c instanceof TokenLayout) {
-			// detect the drag and drop from layout
-			addToken(((TokenLayout) c).getToken(), -1);
-			return;
-		}
-
-		super.addComponent(c);
-	}
-
-	@Override
-	public void addComponent(Component c, int index) {
-		if (c instanceof TokenLayout) {
-			// detect the drag and drop from layout
-			addToken(((TokenLayout) c).getToken(), index);
-			return;
-		}
-
-		super.addComponent(c, index);
-	}
-
-	public void removeToken(Token token) {
-		Token tokenData = tokenRemoveInterceptor.action(token);
-
-		if (tokenData == null) {
-			// prevent remove if interceptor not allow
-			return;
-		}
-
-		// search in layout and remove if found
-		TokenLayout tl = null;
-		for (Iterator<Component> iterator = iterator(); iterator.hasNext();) {
-			Component component = (Component) iterator.next();
-			if (component instanceof TokenLayout) {
-				if (((TokenLayout) component).getToken().equals(token)) {
-					tl = (TokenLayout) component;
-					break;
-				}
-			}
-		}
-
-		if (tl != null && tl.getToken() != null && tl.getToken().equals(tokenData)) {
-			super.removeComponent(tl);
-		}
-
-		if (tokenRemoveListener != null && tl != null) {
-			tokenRemoveListener.action(tl);
-		}
-
-		if (removeInitTokens || !initTokensOfField.contains(tokenData)) {
-			if (CONSTANTS.DEBUG) {
-				System.out.println("remove init tokens: " + removeInitTokens);
-
-				System.out.println("in  init token: " + initTokensOfField.stream().anyMatch(e -> e.equals(tokenData)));
-				System.out.println("removing token: " + tokenData);
-			}
-			tokensOfField.remove(tokenData);
-		}
-	}
-
-	public void addToken(Token token, int idx) {
-		Token tokenData = tokenAddInterceptor.action(token);
-		if (tokenData == null) {
-			// filter empty tokens
-			return;
-		}
-
-		TokenLayout tokenLayout = new TokenLayout(tokenData, tokenClickListener, tokenCloseButton);
-
-		if (tokenCloseButton)
-			tokenLayout.getBtn().addClickListener(e -> {
-				removeToken(tokenLayout.getToken());
-			});
-
-		addTokenToInputField(tokenData);
-
-		if (idx > -1) {
-			super.addComponent(tokenLayout, idx);
-		} else {
-			super.addComponent(tokenLayout, getComponentCount() - 1);
-
-		}
-
-		if (tokenAddListener != null)
-			tokenAddListener.action(tokenData);
-
-		inputField.clear();
+	public void overwriteEmptyTokenValue(String emptyTokenValue) {
+		this.EMPTY_TOKEN = emptyTokenValue;
 	}
 
 	public void addToken(Token token) {
+		// -1 because always put as last element
 		addToken(token, -1);
 	}
 
@@ -397,14 +210,14 @@ public class AdvancedTokenField extends DDCssLayout {
 	}
 
 	public void addOnEnterListener(OnEnterListener listener) {
-		enterListener = listener;
+		this.enterListener = listener;
 	}
 
 	public void addTokenClickListener(TokenClickListener listener) {
 		this.tokenClickListener = listener;
 	}
 
-	/**
+	/*
 	 * Interceptors
 	 */
 
@@ -418,6 +231,203 @@ public class AdvancedTokenField extends DDCssLayout {
 
 	public void addTokenAddNewItemInterceptor(TokenNewItemInterceptor interceptor) {
 		this.tokenNewItemInterceptor = interceptor;
+	}
+
+	/*
+	 * internal
+	 */
+
+	private void init() {
+		addStyleName(BASE_STYLE);
+
+		suggestionProvider = new TokenSuggestionProvider(tokensOfField, querySuggestionInputMinLength);
+		inputField = new SearchDropDown<Token>(suggestionProvider);
+		inputField.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+		inputField.addSearchListener(search -> {
+			String input = search.getSource().getValue().trim();
+			if (StringUtils.isEmpty(input)) {
+				return;
+			}
+
+			if (!allowNewTokens) {
+				Token token = tokensOfField.stream().filter(e -> e.getValue().equals(input)).findFirst().orElse(null);
+
+				if (token != null)
+					addToken(token);
+			} else {
+				Token token = tokensOfField.stream().filter(e -> e.getValue().equals(input)).findFirst().orElse(null);
+
+				if (token != null) {
+					addToken(token);
+				} else {
+					token = tokenNewItemInterceptor.action(Token.builder().idAndValue(input).build());
+					addToken(token);
+				}
+			}
+		});
+
+		addComponent(inputField);
+		setDragMode(LayoutDragMode.CLONE);
+
+		// Enable dropping
+		setDropHandler(new DefaultCssLayoutDropHandler());
+
+		// Only allow draggin buttons
+		setDragFilter(new DragFilter() {
+			private static final long serialVersionUID = 5221913366037820701L;
+
+			public boolean isDraggable(Component component) {
+				return component instanceof TokenLayout;
+			}
+		});
+
+		tokenAddInterceptor = new TokenAddInterceptor() {
+
+			@Override
+			public Token action(Token token) {
+				return token;
+			}
+		};
+
+		tokenRemoveInterceptor = new TokenRemoveInterceptor() {
+
+			@Override
+			public Token action(Token event) {
+				return event;
+			}
+		};
+
+		tokenNewItemInterceptor = new TokenNewItemInterceptor() {
+
+			@Override
+			public Token action(Token token) {
+				return token;
+			}
+		};
+
+		copyInputfieldTokensToInitTokens();
+	}
+
+	@Override
+	public Registration addComponentAttachListener(ComponentAttachListener listener) {
+		if (TOKENFIELD_CONSTANTS.DEBUG)
+			System.out.println("add detecting class attach");
+		return super.addComponentAttachListener(listener);
+	}
+
+	@Override
+	public void removeComponent(Component c) {
+		if (TOKENFIELD_CONSTANTS.DEBUG)
+			System.out.println("remove detecting class: " + c.getClass());
+		if (c instanceof TokenLayout) {
+			// detect the drag and drop from layout
+			removeToken(((TokenLayout) c).getToken());
+			return;
+		}
+		super.removeComponent(c);
+	}
+
+	@Override
+	public void addComponentAsFirst(Component c) {
+		if (TOKENFIELD_CONSTANTS.DEBUG)
+			System.out.println("add detecting class: " + c.getClass());
+		if (c instanceof TokenLayout) {
+			// detect the drag and drop from layout
+			addToken(((TokenLayout) c).getToken(), getComponentCount());
+			return;
+		}
+
+		super.addComponent(c);
+	}
+
+	@Override
+	public void addComponent(Component c) {
+		if (c instanceof TokenLayout) {
+			// detect the drag and drop from layout
+			addToken(((TokenLayout) c).getToken(), -1);
+			return;
+		}
+
+		super.addComponent(c);
+	}
+
+	@Override
+	public void addComponent(Component c, int index) {
+		if (c instanceof TokenLayout) {
+			// detect the drag and drop from layout
+			addToken(((TokenLayout) c).getToken(), index);
+			return;
+		}
+
+		super.addComponent(c, index);
+	}
+
+	public void removeToken(Token token) {
+		Token tokenData = tokenRemoveInterceptor.action(token);
+
+		if (tokenData == null) {
+			// prevent remove if interceptor not allow
+			return;
+		}
+
+		// search in layout and remove if found
+		TokenLayout tl = null;
+		for (Iterator<Component> iterator = iterator(); iterator.hasNext();) {
+			Component component = (Component) iterator.next();
+			if (component instanceof TokenLayout) {
+				if (((TokenLayout) component).getToken().equals(token)) {
+					tl = (TokenLayout) component;
+					break;
+				}
+			}
+		}
+
+		if (tl != null && tl.getToken() != null && tl.getToken().equals(tokenData)) {
+			super.removeComponent(tl);
+		}
+
+		if (tokenRemoveListener != null && tl != null) {
+			tokenRemoveListener.action(tl);
+		}
+
+		if (removeInitTokens || !initTokensOfField.contains(tokenData)) {
+			if (TOKENFIELD_CONSTANTS.DEBUG) {
+				System.out.println("remove init tokens: " + removeInitTokens);
+
+				System.out.println("in  init token: " + initTokensOfField.stream().anyMatch(e -> e.equals(tokenData)));
+				System.out.println("removing token: " + tokenData);
+			}
+			tokensOfField.remove(tokenData);
+		}
+	}
+
+	public void addToken(Token token, int idx) {
+		Token tokenData = tokenAddInterceptor.action(token);
+		if (tokenData == null) {
+			// filter empty tokens
+			return;
+		}
+
+		TokenLayout tokenLayout = new TokenLayout(tokenData, EMPTY_TOKEN, tokenClickListener, tokenCloseButton);
+
+		if (tokenCloseButton)
+			tokenLayout.getBtn().addClickListener(e -> {
+				removeToken(tokenLayout.getToken());
+			});
+
+		addTokenToInputField(tokenData);
+
+		if (idx > -1) {
+			super.addComponent(tokenLayout, idx);
+		} else {
+			super.addComponent(tokenLayout, getComponentCount() - 1);
+
+		}
+
+		if (tokenAddListener != null)
+			tokenAddListener.action(tokenData);
+
+		inputField.clear();
 	}
 
 }
