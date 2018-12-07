@@ -6,7 +6,7 @@
 	<groupId>com.fo0.advancedtokenfield</groupId>
 	<artifactId>AdvancedTokenField</artifactId>
 	<packaging>bundle</packaging>
-	<version>0.4.1</version>
+	<version>0.5.0</version>
 	<name>AdvancedTokenField Add-on</name>
 
 	<prerequisites>
@@ -22,8 +22,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<vaadin.version>8.5.2</vaadin.version>
-		<vaadin.plugin.version>8.5.2</vaadin.plugin.version>
+		<vaadin.version>8.6.2</vaadin.version>
+		<vaadin.plugin.version>8.6.2</vaadin.plugin.version>
 		<!-- ZIP Manifest fields -->
 		<Implementation-Version>${project.version}</Implementation-Version>
 		<!-- Must not change this because of the Directory -->
@@ -80,17 +80,17 @@
 
 
 		<!-- just for right now, creating this layout later with vaadin 8 components -->
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>dragdroplayouts</artifactId>
 			<version>[1.4.2, )</version>
-		</dependency>
-		<dependency>
+		</dependency> -->
+	<!-- 	<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-compatibility-server</artifactId>
 			<version>${vaadin.version}</version>
-		</dependency>
-		<dependency>
+		</dependency> -->
+		<!-- <dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-compatibility-client</artifactId>
 			<version>${vaadin.version}</version>
@@ -99,7 +99,7 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-compatibility-shared</artifactId>
 			<version>${vaadin.version}</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- <dependency> <groupId>eu.maxschuster</groupId> <artifactId>vaadin-autocompletetextfield</artifactId> 
 			<version>[3.0-alpha-2, )</version> </dependency> -->
