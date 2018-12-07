@@ -26,12 +26,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import fi.jasoft.dragdroplayouts.DDCssLayout;
-import fi.jasoft.dragdroplayouts.client.ui.LayoutDragMode;
-import fi.jasoft.dragdroplayouts.drophandlers.DefaultCssLayoutDropHandler;
-import fi.jasoft.dragdroplayouts.interfaces.DragFilter;
 
-public class AdvancedTokenField extends DDCssLayout {
+public class AdvancedTokenField extends CssLayout {
 
 	private static final long serialVersionUID = 8139678186130686248L;
 
@@ -267,19 +263,20 @@ public class AdvancedTokenField extends DDCssLayout {
 		});
 
 		addComponent(inputField);
-		setDragMode(LayoutDragMode.CLONE);
+		// deactivated
+//		setDragMode(LayoutDragMode.CLONE);
 
 		// Enable dropping
-		setDropHandler(new DefaultCssLayoutDropHandler());
+//		setDropHandler(new DefaultCssLayoutDropHandler());
 
 		// Only allow draggin buttons
-		setDragFilter(new DragFilter() {
-			private static final long serialVersionUID = 5221913366037820701L;
-
-			public boolean isDraggable(Component component) {
-				return component instanceof TokenLayout;
-			}
-		});
+//		setDragFilter(new DragFilter() {
+//			private static final long serialVersionUID = 5221913366037820701L;
+//
+//			public boolean isDraggable(Component component) {
+//				return component instanceof TokenLayout;
+//			}
+//		});
 
 		tokenAddInterceptor = new TokenAddInterceptor() {
 
