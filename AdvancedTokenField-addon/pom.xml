@@ -203,7 +203,7 @@
 				<configuration>
 					<instructions>
 						<Export-Package>com.fo0.advancedtokenfield.*,!fi.jasoft.dragdroplayouts.*</Export-Package>
-						<Import-Package>!com.google.gwt.*,!com.vaadin.client.*,!fi.jasoft.dragdroplayouts.*,!com.vaadin.v7.*,*</Import-Package>
+						<Import-Package>!com.google.gwt.*,!com.vaadin.client.*,*</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>
